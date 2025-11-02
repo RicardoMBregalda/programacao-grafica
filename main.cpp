@@ -23,6 +23,32 @@
 #include "Banqueta.h"
 #include "Wardrobe.h"
 
+// Variáveis globais para controle do mouse
+Camera* globalCamera = nullptr;
+bool firstMouse = true;
+float lastX = 512.0f; 
+float lastY = 384.0f; 
+
+//peguei daqui: https://learnopengl.com/Getting-started/Camera
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+  
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos;
+    lastX = xpos;
+    lastY = ypos;
+
+    if (globalCamera != nullptr)
+    {
+        globalCamera->processMouseMovement(xoffset, yoffset);
+    }
+}
 
 int main() {
     // Cria janela e inicializa OpenGL
@@ -95,9 +121,16 @@ int main() {
 
 
     Camera camera(glm::vec3(0.0f, 0.0f, 8.0f));
+    
+    // Configura o ponteiro global para o callback do mouse
+    globalCamera = &camera;
 
     float deltaTime = 0.0f, lastFrame = 0.0f;
     glEnable(GL_DEPTH_TEST);
+    
+    // Configura o mouse para controlar a câmera
+    glfwSetInputMode(app.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPosCallback(app.getWindow(), mouse_callback);  
 
     // Loop principal
     while (!glfwWindowShouldClose(app.getWindow())) {
@@ -117,6 +150,10 @@ int main() {
             camera.processKeyboard(Camera::LEFT, deltaTime);
         if (glfwGetKey(app.getWindow(), GLFW_KEY_D) == GLFW_PRESS)
             camera.processKeyboard(Camera::RIGHT, deltaTime);
+
+        if(glfwGetKey(app.getWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
+            camera.setPosition(glm::vec3(0.0f, 0.0f, 8.0f));
+
 
         // Rotação com setas
         if (glfwGetKey(app.getWindow(), GLFW_KEY_UP) == GLFW_PRESS)

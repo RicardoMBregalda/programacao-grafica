@@ -58,7 +58,7 @@ void Camera::rotate(float xOffset, float yOffset) {
     yaw += xOffset * sensitivity;
     pitch += yOffset * sensitivity;
 
-    // Limita o pitch para evitar inversão da câmera
+    // Limita o pitch para evitar inversï¿½o da cï¿½mera
     if(pitch > 89.0f)
         pitch = 89.0f;
     if(pitch < -89.0f)
@@ -67,7 +67,26 @@ void Camera::rotate(float xOffset, float yOffset) {
     updateCameraVectors();
 }
 
-// Implementação dos Getters
+void Camera::processMouseMovement(float xoffset, float yoffset, bool constrainPitch)
+{
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+
+    yaw   += xoffset;
+    pitch += yoffset;
+
+    if (constrainPitch)
+    {
+        if (pitch > 89.0f)
+            pitch = 89.0f;
+        if (pitch < -89.0f)
+            pitch = -89.0f;
+    }
+
+    updateCameraVectors();
+}
+
+// Implementaï¿½ï¿½o dos Getters
 glm::vec3 Camera::getPosition() const {
     return position;
 }
@@ -84,7 +103,7 @@ float Camera::getFOV() const {
     return fov;
 }
 
-// Implementação dos Setters
+// Implementaï¿½ï¿½o dos Setters
 void Camera::setPosition(const glm::vec3& pos) {
     position = pos;
 }

@@ -6,23 +6,23 @@
 
 class Camera {
 private:
-    // Atributos da câmera
+    // Atributos da cï¿½mera
     glm::vec3 position;
     glm::vec3 front;
     glm::vec3 up;
     glm::vec3 right;
     glm::vec3 worldUp;
 
-    // Ângulos de Euler
+    // ï¿½ngulos de Euler
     float yaw;
     float pitch;
 
-    // Opções da câmera
+    // Opï¿½ï¿½es da cï¿½mera
     float sensitivity;
     float movementSpeed;
     float fov;
 
-    // Atualiza os vetores da câmera
+    // Atualiza os vetores da cï¿½mera
     void updateCameraVectors();
 
 public:
@@ -35,13 +35,14 @@ public:
     // Retorna a matriz de view
     glm::mat4 getViewMatrix() const;
 
-    // Retorna a matriz de projeção
+    // Retorna a matriz de projeï¿½ï¿½o
     glm::mat4 getProjectionMatrix(float aspectRatio, float near = 0.1f, float far = 100.0f) const;
 
     // Processa input de teclado
     void processKeyboard(int direction, float deltaTime);
+    void processMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
 
-    // Processa rotação da câmera
+    // Processa rotaï¿½ï¿½o da cï¿½mera
     void rotate(float xOffset, float yOffset);
 
     // Getters
@@ -56,7 +57,7 @@ public:
     void setMovementSpeed(float speed);
     void setFOV(float newFov);
 
-    // Direções para movimento
+    // Direï¿½ï¿½es para movimento
     enum Direction {
         FORWARD,
         BACKWARD,
