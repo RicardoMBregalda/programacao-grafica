@@ -53,25 +53,40 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     }
 }
 
-int main() {
-    // Cria janela e inicializa OpenGL
-    Application app(1024, 768, "Cena 3D - Objetos OOP");
-    if (!app.init()) return -1;
+void verifyKeyPress(Camera& camera, Application& app, float deltaTime) {
+            if (glfwGetKey(app.getWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            glfwSetWindowShouldClose(app.getWindow(), true);
 
-    // Shader
-    Shader shader("vertex.glsl", "fragment.glsl");
-    shader.use();
+        // Movimentação básica
+        if (glfwGetKey(app.getWindow(), GLFW_KEY_W) == GLFW_PRESS)
+            camera.processKeyboard(Camera::FORWARD, deltaTime);
+        if (glfwGetKey(app.getWindow(), GLFW_KEY_S) == GLFW_PRESS)
+            camera.processKeyboard(Camera::BACKWARD, deltaTime);
+        if (glfwGetKey(app.getWindow(), GLFW_KEY_A) == GLFW_PRESS)
+            camera.processKeyboard(Camera::LEFT, deltaTime);
+        if (glfwGetKey(app.getWindow(), GLFW_KEY_D) == GLFW_PRESS)
+            camera.processKeyboard(Camera::RIGHT, deltaTime);
+        if (glfwGetKey(app.getWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
+            camera.processKeyboard(Camera::UP, deltaTime);
+        if (glfwGetKey(app.getWindow(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+            camera.processKeyboard(Camera::DOWN, deltaTime);
 
-    // Carrega texturas
-    Texture tex1("pedra-28.jpg");
-    Texture tex2("opengl.png");
+        // Reseta a posição da câmera
+        if(glfwGetKey(app.getWindow(), GLFW_KEY_BACKSPACE) == GLFW_PRESS)
+            camera.resetCameraPosition();
 
-    shader.setInt("texture1", 0);
-    shader.setInt("texture2", 1);
+        // Rotação com setas
+        if (glfwGetKey(app.getWindow(), GLFW_KEY_UP) == GLFW_PRESS)
+            camera.rotate(0.0f, 1.0f);
+        if (glfwGetKey(app.getWindow(), GLFW_KEY_DOWN) == GLFW_PRESS)
+            camera.rotate(0.0f, -1.0f);
+        if (glfwGetKey(app.getWindow(), GLFW_KEY_LEFT) == GLFW_PRESS)
+            camera.rotate(-1.0f, 0.0f);
+        if (glfwGetKey(app.getWindow(), GLFW_KEY_RIGHT) == GLFW_PRESS)
+            camera.rotate(1.0f, 0.0f);
+}
 
-    std::vector<std::unique_ptr<Object>> sceneObjects;
-
-    // Paredes e chão
+void createScene(std::vector<std::unique_ptr<Object>>& sceneObjects) {
     sceneObjects.push_back(std::make_unique<Wall>(glm::vec3(6.0f, 0.0f, -3.0f), 0.0f));
     sceneObjects.push_back(std::make_unique<Floor>(glm::vec3(7.0f, 0.0f, -3.0f), 0.0f));
   
@@ -105,6 +120,29 @@ int main() {
     auto wardrobe = std::make_unique<Wardrobe>(glm::vec3(3.0f, 0.0f, -3.0f), 0.0f);
     wardrobe->scale = glm::vec3(1.2f);
     sceneObjects.push_back(std::move(wardrobe));
+}
+
+
+
+int main() {
+    // Cria janela e inicializa OpenGL
+    Application app(1024, 768, "Cena 3D - Objetos OOP");
+    if (!app.init()) return -1;
+
+    // Shader
+    Shader shader("vertex.glsl", "fragment.glsl");
+    shader.use();
+
+    // Carrega texturas
+    Texture tex1("pedra-28.jpg");
+    Texture tex2("opengl.png");
+
+    shader.setInt("texture1", 0);
+    shader.setInt("texture2", 1);
+
+    // Cria cena
+    std::vector<std::unique_ptr<Object>> sceneObjects;
+    createScene(sceneObjects);
 
     // Camera
     Camera camera(glm::vec3(0.0f, 0.0f, 8.0f));
@@ -124,36 +162,7 @@ int main() {
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
-            glfwSetWindowShouldClose(app.getWindow(), true);
-
-        // Movimentação básica
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_W) == GLFW_PRESS)
-            camera.processKeyboard(Camera::FORWARD, deltaTime);
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_S) == GLFW_PRESS)
-            camera.processKeyboard(Camera::BACKWARD, deltaTime);
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_A) == GLFW_PRESS)
-            camera.processKeyboard(Camera::LEFT, deltaTime);
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_D) == GLFW_PRESS)
-            camera.processKeyboard(Camera::RIGHT, deltaTime);
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
-            camera.processKeyboard(Camera::UP, deltaTime);
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-            camera.processKeyboard(Camera::DOWN, deltaTime);
-
-        // Reseta a posição da câmera
-        if(glfwGetKey(app.getWindow(), GLFW_KEY_BACKSPACE) == GLFW_PRESS)
-            camera.resetCameraPosition();
-
-        // Rotação com setas
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_UP) == GLFW_PRESS)
-            camera.rotate(0.0f, 1.0f);
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_DOWN) == GLFW_PRESS)
-            camera.rotate(0.0f, -1.0f);
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_LEFT) == GLFW_PRESS)
-            camera.rotate(-1.0f, 0.0f);
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_RIGHT) == GLFW_PRESS)
-            camera.rotate(1.0f, 0.0f);
+        verifyKeyPress(camera, app, deltaTime);
 
         glClearColor(0.7f, 0.5f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
