@@ -22,11 +22,6 @@
 #include "Lamp.h"
 #include "Banqueta.h"
 #include "Wardrobe.h"
-#include "Sink.h"
-
-
-
-
 
 
 int main() {
@@ -93,7 +88,7 @@ int main() {
     banqueta.scale = glm::vec3(1.0f);
 
 
-    Sink sink(glm::vec3(2.0f, 0.0f, -1.0f), 0.0f);
+    //Sink sink(glm::vec3(2.0f, 0.0f, -1.0f), 0.0f);
 
 
     Wardrobe wardrobe(glm::vec3(3.0f, 0.0f, -3.0f), 0.0f);
@@ -163,9 +158,9 @@ int main() {
         //tv.draw(shader, model);
         //lamp.draw(shader, model);
         //banqueta.draw(shader, model);
-        //wardrobe.draw(shader, model);
+        wardrobe.draw(shader, model);
 
-        sink.draw(shader, model);
+        //sink.draw(shader, model);
 
         glfwSwapBuffers(app.getWindow());
         glfwPollEvents();
