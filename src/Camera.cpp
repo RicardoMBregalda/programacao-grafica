@@ -86,6 +86,15 @@ void Camera::processMouseMovement(float xoffset, float yoffset, bool constrainPi
     updateCameraVectors();
 }
 
+void Camera::resetCameraPosition() {
+    position = glm::vec3(0.0f, 0.0f, 8.0f);
+    yaw = -90.0f;
+    pitch = 0.0f;
+    updateCameraVectors();
+}
+
+
+
 // Implementa��o dos Getters
 glm::vec3 Camera::getPosition() const {
     return position;

@@ -41,7 +41,7 @@ public:
     // Processa input de teclado
     void processKeyboard(int direction, float deltaTime);
     void processMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
-
+    void resetCameraPosition();
     // Processa rota��o da c�mera
     void rotate(float xOffset, float yOffset);
 

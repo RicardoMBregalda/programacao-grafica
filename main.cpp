@@ -10,6 +10,7 @@
 #include <Texture.h>
 #include <prisma.h>
 #include <iostream>
+#include <memory>
 #include <Cilindro.h>
 #include <Esfera.h>
 #include <Camera.h>
@@ -22,6 +23,8 @@
 #include "Lamp.h"
 #include "Banqueta.h"
 #include "Wardrobe.h"
+#include "Wall.h"
+#include "Floor.h"
 
 // Variáveis globais para controle do mouse
 Camera* globalCamera = nullptr;
@@ -66,63 +69,46 @@ int main() {
     shader.setInt("texture1", 0);
     shader.setInt("texture2", 1);
 
-    // Objetos de cena
-    Prisma prisma(glm::vec3(4.0f, 0.0f, 0.0f));
-    Cube cube1(glm::vec3(2.0f, 0.0f, -2.5f));
-    Cube cube2(glm::vec3(-2.0f, 1.0f, -4.0f));
-    Cube cube3(glm::vec3(-3.0f, -1.0f, 3.0f));
+    std::vector<std::unique_ptr<Object>> sceneObjects;
 
-    Banrisul banri(glm::vec3(0.0f, 0.0f, 0.0f), 0.0f);
-    banri.scale = glm::vec3(2.5f);
+    // Paredes e chão
+    sceneObjects.push_back(std::make_unique<Wall>(glm::vec3(6.0f, 0.0f, -3.0f), 0.0f));
+    sceneObjects.push_back(std::make_unique<Floor>(glm::vec3(7.0f, 0.0f, -3.0f), 0.0f));
+  
 
-    Chair chair(glm::vec3(-1.0f, 0.0f, 2.0f), 0.0f);
-    chair.scale = glm::vec3(1.5f);
+    auto chair = std::make_unique<Chair>(glm::vec3(-1.0f, 0.0f, 2.0f), 0.0f);
+    chair->scale = glm::vec3(1.5f);
+    sceneObjects.push_back(std::move(chair));
 
+    auto bed = std::make_unique<Bed>(glm::vec3(0.0f, 0.0f, -3.0f), 0.0f);
+    bed->scale = glm::vec3(1.0f);
+    sceneObjects.push_back(std::move(bed));
 
-    Bed bed(glm::vec3(0.0f, 0.0f, -3.0f), 0.0f);
-    bed.scale = glm::vec3(1.0f);
+    sceneObjects.push_back(std::make_unique<Nightstand>(glm::vec3(-1.5f, 0.0f, -3.0f), 0.0f));
 
-    Nightstand nightstand(glm::vec3(-1.5f, 0.0f, -3.0f), 0.0f);
+    auto table = std::make_unique<Table>(glm::vec3(0.0f, 0.0f, -1.5f), 0.0f);
+    table->scale = glm::vec3(1.2f, 1.2f, 1.2f);
+    sceneObjects.push_back(std::move(table));
 
+    sceneObjects.push_back(std::make_unique<Rack>(glm::vec3(0.0f, 0.0f, -4.0f), 0.0f));
 
-    Table table(glm::vec3(0.0f, 0.0f, -1.5f), 0.0f);
-    table.scale = glm::vec3(1.2f, 1.2f, 1.2f);
+    sceneObjects.push_back(std::make_unique<TV>(glm::vec3(0.0f, 0.38f, -4.0f), 0.0f));
 
+    auto lamp = std::make_unique<Lamp>(glm::vec3(-1.5f, 0.55f, -3.0f), 0.0f);
+    lamp->scale = glm::vec3(0.8f);
+    sceneObjects.push_back(std::move(lamp));
 
-    Cilindro cilindro(glm::vec3(0.0f, 0.0f, 0.0f),
-                      glm::vec3(1.0f, 0.0f, 0.0f),
-                      glm::vec3(1.0f, 2.0f, 1.0f),
-                      45.0f, 36);
+    auto banqueta = std::make_unique<Banqueta>(glm::vec3(1.5f, 0.0f, -2.0f), 0.0f);
+    banqueta->scale = glm::vec3(1.0f);
+    sceneObjects.push_back(std::move(banqueta));
 
-    Esfera esfera(glm::vec3(0.0f, 0.0f, 0.0f),
-                  glm::vec3(0.0f, 1.0f, 0.0f),
-                  glm::vec3(1.0f),
-                  0.0f,
-                  18, 36);
+    auto wardrobe = std::make_unique<Wardrobe>(glm::vec3(3.0f, 0.0f, -3.0f), 0.0f);
+    wardrobe->scale = glm::vec3(1.2f);
+    sceneObjects.push_back(std::move(wardrobe));
 
-    // Criar o rack
-    Rack rack(glm::vec3(0.0f, 0.0f, -4.0f), 0.0f);
-
-    // Criar a TV em cima do rack
-    TV tv(glm::vec3(0.0f, 0.38f, -4.0f), 0.0f);
-
-    // Lamp posicionada no criado-mudo
-    Lamp lamp(glm::vec3(-1.5f, 0.55f, -3.0f), 0.0f);
-    lamp.scale = glm::vec3(0.8f);
-
-    Banqueta banqueta(glm::vec3(1.5f, 0.0f, -2.0f), 0.0f);
-    banqueta.scale = glm::vec3(1.0f);
-
-
-    //Sink sink(glm::vec3(2.0f, 0.0f, -1.0f), 0.0f);
-
-
-    Wardrobe wardrobe(glm::vec3(3.0f, 0.0f, -3.0f), 0.0f);
-
-
+    // Camera
     Camera camera(glm::vec3(0.0f, 0.0f, 8.0f));
     
-    // Configura o ponteiro global para o callback do mouse
     globalCamera = &camera;
 
     float deltaTime = 0.0f, lastFrame = 0.0f;
@@ -150,10 +136,14 @@ int main() {
             camera.processKeyboard(Camera::LEFT, deltaTime);
         if (glfwGetKey(app.getWindow(), GLFW_KEY_D) == GLFW_PRESS)
             camera.processKeyboard(Camera::RIGHT, deltaTime);
+        if (glfwGetKey(app.getWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
+            camera.processKeyboard(Camera::UP, deltaTime);
+        if (glfwGetKey(app.getWindow(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+            camera.processKeyboard(Camera::DOWN, deltaTime);
 
-        if(glfwGetKey(app.getWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
-            camera.setPosition(glm::vec3(0.0f, 0.0f, 8.0f));
-
+        // Reseta a posição da câmera
+        if(glfwGetKey(app.getWindow(), GLFW_KEY_BACKSPACE) == GLFW_PRESS)
+            camera.resetCameraPosition();
 
         // Rotação com setas
         if (glfwGetKey(app.getWindow(), GLFW_KEY_UP) == GLFW_PRESS)
@@ -182,23 +172,10 @@ int main() {
         glm::mat4 model = glm::mat4(1.0f);
 
         // Desenha objetos
-
-        // Teste simples: desenhar um cubo primeiro
-        //nightstand.draw(shader, model);
-        //esfera.draw(shader, glm::mat4(1.0f));
-        //table.draw(shader, glm::mat4(1.0f));
-        //bed.draw(shader, model);
-        //chair.draw(shader, model);
-        // banri.draw(shader, model);
-        // cilindro.draw(shader, glm::mat4(1.0f));
-        //rack.draw(shader, model);
-        //tv.draw(shader, model);
-        //lamp.draw(shader, model);
-        //banqueta.draw(shader, model);
-        wardrobe.draw(shader, model);
-
-        //sink.draw(shader, model);
-
+        for (auto& obj : sceneObjects) {
+            obj->draw(shader, model);
+        }
+        
         glfwSwapBuffers(app.getWindow());
         glfwPollEvents();
     }
