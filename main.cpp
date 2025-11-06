@@ -25,6 +25,7 @@
 #include "Wardrobe.h"
 #include "Wall.h"
 #include "Floor.h"
+#include "Sofa.h"
 
 // Variáveis globais para controle do mouse
 Camera* globalCamera = nullptr;
@@ -182,6 +183,16 @@ void createScene(std::vector<std::unique_ptr<Object>>& sceneObjects,
     );
     banqueta->scale = glm::vec3(1.0f);
     sceneObjects.push_back(std::move(banqueta));
+
+    // Sofá COM texturas (tecido e madeira)
+    auto sofa = std::make_unique<Sofa>(
+        glm::vec3(2.5f, 0.0f, 1.5f),    // posição
+        180.0f,                          // ângulo (virado para frente)
+        fabricTex,                       // textura de tecido (assento, encosto, braços)
+        woodTex                          // textura de madeira (pés)
+    );
+    sofa->scale = glm::vec3(1.0f);
+    sceneObjects.push_back(std::move(sofa));
 
     auto wardrobe = std::make_unique<Wardrobe>(
         glm::vec3(4.5f, 0.0f, -2.5f),  // posição ajustada
