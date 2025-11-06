@@ -1,8 +1,9 @@
 // Prisma.cpp
 #include "Prisma.h"
+#include "Texture.h"
 
 float vertices2[] = {
-    // Posi��es          // Coords Textura
+    // Posições          // Coords Textura
     0.0f, 0.0f, 0.0f,    0.0f, 0.0f, // 0 - base esquerda traseira
     0.0f, 1.0f, 0.0f,    0.0f, 1.0f, // 1 - topo traseiro
     1.0f, 0.0f, 0.0f,    1.0f, 0.0f, // 2 - base direita traseira
@@ -31,9 +32,13 @@ unsigned int indices2[] = {
     3, 5, 4
 };
 
-Prisma::Prisma(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float angle)
-    : position(pos), rotation(rot), scale(scl), angle(angle) {
+Prisma::Prisma(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float angle, Texture* tex)
+    : position(pos), rotation(rot), scale(scl), angle(angle), texture(tex) {
     init();
+}
+
+void Prisma::setTexture(Texture* tex) {
+    texture = tex;
 }
 
 void Prisma::init() {
@@ -67,6 +72,11 @@ void Prisma::draw(Shader &shader, glm::mat4 model) {
     model = glm::scale(model, scale);
 
     shader.setMat4("model", model);
+
+    // Bind texture if available
+    if (texture != nullptr) {
+        texture->bind(0);
+    }
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);

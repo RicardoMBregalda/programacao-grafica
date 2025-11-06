@@ -1,15 +1,20 @@
 // Esfera.cpp
 #include "Esfera.h"
+#include "Texture.h"
 #include <cmath>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
 
-Esfera::Esfera(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang, int stks, int scts)
-    : position(pos), rotation(rot), scale(scl), angle(ang), stacks(stks), sectors(scts) {
+Esfera::Esfera(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang, int stks, int scts, Texture* tex)
+    : position(pos), rotation(rot), scale(scl), angle(ang), stacks(stks), sectors(scts), texture(tex) {
     generateVertices();
     init();
+}
+
+void Esfera::setTexture(Texture* tex) {
+    texture = tex;
 }
 
 Esfera::~Esfera() {
@@ -24,7 +29,7 @@ void Esfera::generateVertices() {
 
     float radius = 0.5f;
 
-    // Gerar vértices
+    // Gerar vï¿½rtices
     for (int i = 0; i <= stacks; ++i) {
         float stackAngle = M_PI / 2.0f - i * M_PI / stacks;  // de pi/2 a -pi/2
         float xy = radius * cos(stackAngle);
@@ -33,7 +38,7 @@ void Esfera::generateVertices() {
         for (int j = 0; j <= sectors; ++j) {
             float sectorAngle = j * 2.0f * M_PI / sectors;  // de 0 a 2pi
 
-            // Posição do vértice
+            // Posiï¿½ï¿½o do vï¿½rtice
             float x = xy * cos(sectorAngle);
             float y = xy * sin(sectorAngle);
 
@@ -49,13 +54,13 @@ void Esfera::generateVertices() {
         }
     }
 
-    // Gerar índices
+    // Gerar ï¿½ndices
     for (int i = 0; i < stacks; ++i) {
         int k1 = i * (sectors + 1);
         int k2 = k1 + sectors + 1;
 
         for (int j = 0; j < sectors; ++j, ++k1, ++k2) {
-            // Dois triângulos por quad
+            // Dois triï¿½ngulos por quad
             if (i != 0) {
                 indices.push_back(k1);
                 indices.push_back(k2);
@@ -104,6 +109,11 @@ void Esfera::draw(Shader &shader, glm::mat4 model) {
     model = glm::scale(model, scale);
 
     shader.setMat4("model", model);
+
+    // Se hÃ¡ uma textura especÃ­fica para esta esfera, usa ela
+    if (texture != nullptr) {
+        texture->bind(0);
+    }
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);

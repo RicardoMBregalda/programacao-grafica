@@ -1,18 +1,19 @@
 #include "Table.h"
 #include "Cube.h"
+#include "Texture.h"
 
-Table::Table(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang)
-    : Object(pos, rot, scl, ang) {
+Table::Table(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang, Texture* wood)
+    : Object(pos, rot, scl, ang), woodTexture(wood) {
     init();
 }
 
-Table::Table(glm::vec3 pos, float ang)
-    : Object(pos, glm::vec3(0.0f), glm::vec3(1.0f), ang) {
+Table::Table(glm::vec3 pos, float ang, Texture* wood)
+    : Object(pos, glm::vec3(0.0f), glm::vec3(1.0f), ang), woodTexture(wood) {
     init();
 }
 
 void Table::init() {
-    // --- proporções em escala com a cadeira ---
+    // --- proporï¿½ï¿½es em escala com a cadeira ---
     const float topW = 1.2f;     // largura (X)
     const float topD = 0.8f;     // profundidade (Z)
     const float topT = 0.08f;    // espessura do tampo (Y)
@@ -20,26 +21,27 @@ void Table::init() {
     const float legH = 0.68f;    // altura das pernas (~altura do tampo de mesa)
     const float legT = 0.07f;    // espessura das pernas
 
-    // --- posições derivadas ---
+    // --- posiï¿½ï¿½es derivadas ---
     const float topY = legH + topT * 0.5f; // centro do tampo
     const float legCenterY = legH * 0.5f;  // centro das pernas
     const float legOffsetX = topW * 0.5f - legT * 0.5f;
     const float legOffsetZ = topD * 0.5f - legT * 0.5f;
 
-    // --- peças ---
+    // --- peÃ§as ---
     // Tampo
     parts.push_back(std::make_unique<Cube>(
         glm::vec3(0.0f, topY, 0.0f),
         glm::vec3(0.0f, 1.0f, 0.0f),
         glm::vec3(topW, topT, topD),
-        0.0f
+        0.0f,
+        woodTexture  // Textura de madeira
     ));
 
-    // Pernas (4)
-    parts.push_back(std::make_unique<Cube>(glm::vec3( legOffsetX, legCenterY,  legOffsetZ), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(legT,legH,legT), 0.0f));
-    parts.push_back(std::make_unique<Cube>(glm::vec3(-legOffsetX, legCenterY,  legOffsetZ), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(legT,legH,legT), 0.0f));
-    parts.push_back(std::make_unique<Cube>(glm::vec3( legOffsetX, legCenterY, -legOffsetZ), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(legT,legH,legT), 0.0f));
-    parts.push_back(std::make_unique<Cube>(glm::vec3(-legOffsetX, legCenterY, -legOffsetZ), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(legT,legH,legT), 0.0f));
+    // Pernas (4) - todas com textura de madeira
+    parts.push_back(std::make_unique<Cube>(glm::vec3( legOffsetX, legCenterY,  legOffsetZ), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(legT,legH,legT), 0.0f, woodTexture));
+    parts.push_back(std::make_unique<Cube>(glm::vec3(-legOffsetX, legCenterY,  legOffsetZ), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(legT,legH,legT), 0.0f, woodTexture));
+    parts.push_back(std::make_unique<Cube>(glm::vec3( legOffsetX, legCenterY, -legOffsetZ), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(legT,legH,legT), 0.0f, woodTexture));
+    parts.push_back(std::make_unique<Cube>(glm::vec3(-legOffsetX, legCenterY, -legOffsetZ), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(legT,legH,legT), 0.0f, woodTexture));
 }
 
 void Table::draw(Shader &shader, glm::mat4 model) {

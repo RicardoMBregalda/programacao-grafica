@@ -8,16 +8,20 @@
 #include <vector>
 #include <memory>
 
+class Texture;  // Forward declaration
+
 class Table : public Object {
 public:
-    Table(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang);
-    Table(glm::vec3 pos, float ang);
+    Table(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang, 
+          Texture* wood = nullptr);
+    Table(glm::vec3 pos, float ang, Texture* wood = nullptr);
 
     void init();
     void draw(Shader &shader, glm::mat4 model);
 
 private:
     std::vector<std::unique_ptr<Object>> parts;
+    Texture* woodTexture;  // Textura de madeira
 };
 
 #endif // TABLE_H

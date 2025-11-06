@@ -1,5 +1,6 @@
 // Cube.cpp
 #include "Cube.h"
+#include "Texture.h"
 
 float vertices[] = {
     // positions          // tex coords
@@ -44,9 +45,13 @@ unsigned int indices[] = {
     20,21,22, 22,23,20   // bottom
 };
 
-Cube::Cube(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float angle)
-    : position(pos), rotation(rot), scale(scl), angle(angle) {
+Cube::Cube(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float angle, Texture* tex)
+    : position(pos), rotation(rot), scale(scl), angle(angle), texture(tex) {
     init();
+}
+
+void Cube::setTexture(Texture* tex) {
+    texture = tex;
 }
 
 void Cube::init() {
@@ -82,6 +87,11 @@ void Cube::draw(Shader &shader, glm::mat4 model) {
     model = glm::scale(model, scale);
 
     shader.setMat4("model", model);
+
+    // Se há uma textura específica para este cubo, usa ela
+    if (texture != nullptr) {
+        texture->bind(0);
+    }
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);

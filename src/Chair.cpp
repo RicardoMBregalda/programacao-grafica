@@ -1,18 +1,19 @@
 #include "Chair.h"
 #include "Cube.h"
+#include "Texture.h"
 
-Chair::Chair(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang)
-    : Object(pos, rot, scl, ang) {
+Chair::Chair(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang, Texture* wood, Texture* fabric)
+    : Object(pos, rot, scl, ang), woodTexture(wood), fabricTexture(fabric) {
     init();
 }
 
-Chair::Chair(glm::vec3 pos, float ang)
-    : Object(pos, glm::vec3(0.0f), glm::vec3(1.0f), ang) {
+Chair::Chair(glm::vec3 pos, float ang, Texture* wood, Texture* fabric)
+    : Object(pos, glm::vec3(0.0f), glm::vec3(1.0f), ang), woodTexture(wood), fabricTexture(fabric) {
     init();
 }
 
 void Chair::init() {
-    // ----- proporções realistas -----
+    // ----- proporï¿½ï¿½es realistas -----
     const float seatW = 0.8f;      // largura
     const float seatD = 0.65f;      // profundidade
     const float seatT = 0.06f;     // espessura do assento
@@ -24,7 +25,7 @@ void Chair::init() {
     const float backT = 0.06f;     // espessura do encosto
     const float backTiltDeg = -10.0f;
 
-    // ----- posições derivadas -----
+    // ----- posiï¿½ï¿½es derivadas -----
     const float seatY = legH + seatT * 0.5f;       // centro do assento
     const float seatTopY = seatY + seatT * 0.5f;
     const float seatBackEdgeZ = -seatD * 0.5f;
@@ -36,28 +37,29 @@ void Chair::init() {
     const float legOffsetZ = seatD * 0.5f - legT * 0.5f;
     const float legCenterY = legH * 0.5f;
 
-    // ----- peças -----
-    // Assento
+    // ----- peï¿½as -----
+    // Assento (usa fabricTexture - tecido/estofamento)
     parts.push_back(std::make_unique<Cube>(
         glm::vec3(0.0f, seatY, 0.0f),
         glm::vec3(0.0f, 1.0f, 0.0f),
         glm::vec3(seatW, seatT, seatD),
-        0.0f
+        0.0f,
+        fabricTexture
     ));
 
-    // Encosto
     parts.push_back(std::make_unique<Cube>(
         glm::vec3(0.0f, backCenterY, backCenterZ),
         glm::vec3(1.0f, 0.0f, 0.0f),
         glm::vec3(seatW, backH, backT),
-        backTiltDeg
+        backTiltDeg,
+        fabricTexture
     ));
 
-    // Pernas
-    parts.push_back(std::make_unique<Cube>(glm::vec3( legOffsetX, legCenterY,  legOffsetZ), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(legT,legH,legT), 0.0f));
-    parts.push_back(std::make_unique<Cube>(glm::vec3(-legOffsetX, legCenterY,  legOffsetZ), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(legT,legH,legT), 0.0f));
-    parts.push_back(std::make_unique<Cube>(glm::vec3( legOffsetX, legCenterY, -legOffsetZ), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(legT,legH,legT), 0.0f));
-    parts.push_back(std::make_unique<Cube>(glm::vec3(-legOffsetX, legCenterY, -legOffsetZ), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(legT,legH,legT), 0.0f));
+    // Pernas (usam woodTexture - madeira)
+    parts.push_back(std::make_unique<Cube>(glm::vec3( legOffsetX, legCenterY,  legOffsetZ), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(legT,legH,legT), 0.0f, woodTexture));
+    parts.push_back(std::make_unique<Cube>(glm::vec3(-legOffsetX, legCenterY,  legOffsetZ), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(legT,legH,legT), 0.0f, woodTexture));
+    parts.push_back(std::make_unique<Cube>(glm::vec3( legOffsetX, legCenterY, -legOffsetZ), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(legT,legH,legT), 0.0f, woodTexture));
+    parts.push_back(std::make_unique<Cube>(glm::vec3(-legOffsetX, legCenterY, -legOffsetZ), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(legT,legH,legT), 0.0f, woodTexture));
 }
 
 void Chair::draw(Shader &shader, glm::mat4 model) {

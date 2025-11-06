@@ -1,15 +1,20 @@
 // Cilindro.cpp
 #include "Cilindro.h"
+#include "Texture.h"
 #include <cmath>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
 
-Cilindro::Cilindro(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang, int segs)
-    : position(pos), rotation(rot), scale(scl), angle(ang), segments(segs) {
+Cilindro::Cilindro(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang, int segs, Texture* tex)
+    : position(pos), rotation(rot), scale(scl), angle(ang), segments(segs), texture(tex) {
     generateVertices();
     init();
+}
+
+void Cilindro::setTexture(Texture* tex) {
+    texture = tex;
 }
 
 Cilindro::~Cilindro() {
@@ -26,21 +31,21 @@ void Cilindro::generateVertices() {
     float height = 1.0f;
     float halfHeight = height / 2.0f;
 
-    // Vértices do corpo do cilindro
+    // Vï¿½rtices do corpo do cilindro
     for (int i = 0; i <= segments; ++i) {
         float theta = (float)i / segments * 2.0f * M_PI;
         float x = radius * cos(theta);
         float z = radius * sin(theta);
         float u = (float)i / segments;
 
-        // Vértice superior
+        // Vï¿½rtice superior
         vertices.push_back(x);
         vertices.push_back(halfHeight);
         vertices.push_back(z);
         vertices.push_back(u);
         vertices.push_back(1.0f);
 
-        // Vértice inferior
+        // Vï¿½rtice inferior
         vertices.push_back(x);
         vertices.push_back(-halfHeight);
         vertices.push_back(z);
@@ -59,7 +64,7 @@ void Cilindro::generateVertices() {
 
     int topCenterIndex = bodyVertexCount;
 
-    // Vértices da borda da tampa superior
+    // Vï¿½rtices da borda da tampa superior
     for (int i = 0; i <= segments; ++i) {
         float theta = (float)i / segments * 2.0f * M_PI;
         float x = radius * cos(theta);
@@ -83,7 +88,7 @@ void Cilindro::generateVertices() {
 
     int bottomCenterIndex = topStartIndex + segments + 1;
 
-    // Vértices da borda da tampa inferior
+    // Vï¿½rtices da borda da tampa inferior
     for (int i = 0; i <= segments; ++i) {
         float theta = (float)i / segments * 2.0f * M_PI;
         float x = radius * cos(theta);
@@ -98,7 +103,7 @@ void Cilindro::generateVertices() {
 
     int bottomStartIndex = bottomCenterIndex + 1;
 
-    // Índices do corpo
+    // ï¿½ndices do corpo
     for (int i = 0; i < segments; ++i) {
         int top1 = i * 2;
         int bottom1 = i * 2 + 1;
@@ -114,14 +119,14 @@ void Cilindro::generateVertices() {
         indices.push_back(bottom2);
     }
 
-    // Índices da tampa superior
+    // ï¿½ndices da tampa superior
     for (int i = 0; i < segments; ++i) {
         indices.push_back(topCenterIndex);
         indices.push_back(topStartIndex + i);
         indices.push_back(topStartIndex + i + 1);
     }
 
-    // Índices da tampa inferior
+    // ï¿½ndices da tampa inferior
     for (int i = 0; i < segments; ++i) {
         indices.push_back(bottomCenterIndex);
         indices.push_back(bottomStartIndex + i + 1);
@@ -162,6 +167,11 @@ void Cilindro::draw(Shader &shader, glm::mat4 model) {
     model = glm::scale(model, scale);
 
     shader.setMat4("model", model);
+
+    // Se hÃ¡ uma textura especÃ­fica para este cilindro, usa ela
+    if (texture != nullptr) {
+        texture->bind(0);
+    }
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);

@@ -1,14 +1,15 @@
 #include "Banqueta.h"
 #include "Cilindro.h"
 #include "Esfera.h"
+#include "Texture.h"
 
-Banqueta::Banqueta(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang)
-    : Object(pos, rot, scl, ang) {
+Banqueta::Banqueta(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang, Texture* fabric, Texture* metal, Texture* plastic)
+    : Object(pos, rot, scl, ang), fabricTexture(fabric), metalTexture(metal), plasticTexture(plastic) {
     init();
 }
 
-Banqueta::Banqueta(glm::vec3 pos, float ang)
-    : Object(pos, glm::vec3(0.0f), glm::vec3(1.0f), ang) {
+Banqueta::Banqueta(glm::vec3 pos, float ang, Texture* fabric, Texture* metal, Texture* plastic)
+    : Object(pos, glm::vec3(0.0f), glm::vec3(1.0f), ang), fabricTexture(fabric), metalTexture(metal), plasticTexture(plastic) {
     init();
 }
 
@@ -22,37 +23,40 @@ void Banqueta::init() {
     const float baseH = 0.03f;      // altura da base
     const float wheelR = 0.04f;     // raio das rodinhas
 
-    // ===== Assento principal (cilindro baixo e largo) =====
+    // ===== Assento principal (cilindro baixo e largo) - USA fabricTexture =====
     const float seatY = wheelR + baseH + poleH + seatH * 0.5f;
     
     parts.push_back(std::make_unique<Cilindro>(
         glm::vec3(0.0f, seatY, 0.0f),
         glm::vec3(0.0f),
         glm::vec3(seatR, seatH, seatR),
-        0.0f, 32
+        0.0f, 32,
+        fabricTexture  // Textura de tecido no assento
     ));
 
-    // ===== Haste central =====
+    // ===== Haste central - USA metalTexture =====
     const float poleY = wheelR + baseH + poleH * 0.5f;
     
     parts.push_back(std::make_unique<Cilindro>(
         glm::vec3(0.0f, poleY, 0.0f),
         glm::vec3(0.0f),
         glm::vec3(poleR, poleH, poleR),
-        0.0f, 12
+        0.0f, 12,
+        metalTexture  // Textura de metal na haste
     ));
 
-    // ===== Base circular =====
+    // ===== Base circular - USA metalTexture =====
     const float baseY = wheelR + baseH * 0.5f;
     
     parts.push_back(std::make_unique<Cilindro>(
         glm::vec3(0.0f, baseY, 0.0f),
         glm::vec3(0.0f),
         glm::vec3(baseR, baseH, baseR),
-        0.0f, 32
+        0.0f, 32,
+        metalTexture  // Textura de metal na base
     ));
 
-    // ===== Rodinhas (5 rodinhas ao redor da base) =====
+    // ===== Rodinhas (5 rodinhas ao redor da base) - USA plasticTexture =====
     const float wheelDist = baseR * 0.40f;
     const int numWheels = 5;
     
@@ -65,7 +69,8 @@ void Banqueta::init() {
             glm::vec3(wx, wheelR, wz),
             glm::vec3(0.0f),
             glm::vec3(wheelR),
-            0.0f, 12, 24
+            0.0f, 12, 24,
+            plasticTexture  // Textura de plástico nas rodinhas
         ));
     }
 }

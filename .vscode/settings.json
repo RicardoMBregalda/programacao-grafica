@@ -66,5 +66,6 @@
     "xmemory": "cpp",
     "xstring": "cpp",
     "xtr1common": "cpp"
-  }
+  },
+  "C_Cpp.errorSquiggles": "disabled"
 }
