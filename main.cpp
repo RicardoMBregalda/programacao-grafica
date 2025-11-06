@@ -26,6 +26,7 @@
 #include "Wall.h"
 #include "Floor.h"
 #include "Sofa.h"
+#include "Sala.h"
 
 // Variáveis globais para controle do mouse
 Camera* globalCamera = nullptr;
@@ -87,121 +88,22 @@ void verifyKeyPress(Camera& camera, Application& app, float deltaTime) {
             camera.rotate(1.0f, 0.0f);
 }
 
+
 void createScene(std::vector<std::unique_ptr<Object>>& sceneObjects, 
                  Texture* woodTex, Texture* metalTex, Texture* plasticTex, Texture* blackTex, Texture* fabricTex, Texture* stoneTex) {
-    // Parede COM textura de pedra/tijolo
-    auto wall = std::make_unique<Wall>(
-        glm::vec3(6.0f, 0.0f, -3.0f),   // posição
-        0.0f,                            // ângulo
-        stoneTex                         // textura de pedra/tijolo
+    
+    // Cria a sala completa com todos os móveis organizados
+    auto sala = std::make_unique<Sala>(
+        glm::vec3(0.0f, 0.0f, 0.0f),  // Posição central
+        0.0f,                          // Sem rotação
+        woodTex,                       // Textura de madeira
+        metalTex,                      // Textura de metal
+        plasticTex,                    // Textura de plástico
+        blackTex,                      // Textura preta
+        fabricTex,                     // Textura de tecido
+        stoneTex                       // Textura de pedra/tijolo
     );
-    sceneObjects.push_back(std::move(wall));
-
-    // Piso COM textura de pedra/madeira
-    auto floor = std::make_unique<Floor>(
-        glm::vec3(7.0f, 0.0f, -3.0f),   // posição
-        0.0f,                            // ângulo
-        woodTex                          // textura de madeira (assoalho)
-    );
-    sceneObjects.push_back(std::move(floor));
-  
-
-    // Cadeira COM texturas (madeira e tecido)
-    auto chair = std::make_unique<Chair>(
-        glm::vec3(-1.0f, 0.0f, 2.0f),  // posição
-        0.0f,                           // ângulo
-        woodTex,                        // textura de madeira (pernas e encosto)
-        fabricTex                       // textura de tecido (assento)
-    );
-    chair->scale = glm::vec3(1.5f);
-    sceneObjects.push_back(std::move(chair));
-
-    // Cama COM texturas (madeira e tecido)
-    auto bed = std::make_unique<Bed>(
-        glm::vec3(0.0f, 0.0f, -3.0f),   // posição
-        0.0f,                            // ângulo
-        woodTex,                         // textura de madeira (base, cabeceira, pés)
-        fabricTex                        // textura de tecido (colchão, travesseiros)
-    );
-    bed->scale = glm::vec3(1.0f);
-    sceneObjects.push_back(std::move(bed));
-
-    // Criado-mudo COM texturas (madeira e metal)
-    auto nightstand = std::make_unique<Nightstand>(
-        glm::vec3(-1.5f, 0.0f, -3.0f),  // posição
-        0.0f,                            // ângulo
-        woodTex,                         // textura de madeira (corpo, gavetas, pés)
-        metalTex                         // textura de metal (puxadores)
-    );
-    sceneObjects.push_back(std::move(nightstand));
-
-    // Mesa COM textura de madeira
-    auto table = std::make_unique<Table>(
-        glm::vec3(0.0f, 0.0f, -1.5f),  // posição
-        0.0f,                           // ângulo
-        woodTex                         // textura de madeira
-    );
-    table->scale = glm::vec3(1.2f, 1.2f, 1.2f);
-    sceneObjects.push_back(std::move(table));
-
-    // Rack COM textura de madeira e metal
-    auto rack = std::make_unique<Rack>(
-        glm::vec3(0.0f, 0.0f, -4.0f),  // posição
-        0.0f,                           // ângulo
-        woodTex,                        // textura de madeira (prateleiras/laterais)
-        metalTex                        // textura de metal (pés)
-    );
-    sceneObjects.push_back(std::move(rack));
-
-    // TV COM texturas (tela preta e moldura de plástico)
-    auto tv = std::make_unique<TV>(
-        glm::vec3(0.0f, 0.38f, -4.0f), // posição
-        0.0f,                           // ângulo
-        blackTex,                       // textura preta para a tela
-        plasticTex                      // textura de plástico para moldura e suporte
-    );
-    sceneObjects.push_back(std::move(tv));
-
-    // Lâmpada COM texturas (metal, cúpula de tecido, lâmpada)
-    auto lamp = std::make_unique<Lamp>(
-        glm::vec3(-1.5f, 0.55f, -3.0f), // posição
-        0.0f,                            // ângulo
-        metalTex,                        // textura de metal (base e haste)
-        fabricTex,                       // textura de tecido (cúpula/abajur)
-        nullptr                          // SEM textura para lâmpada (usa global - amarelo/branco)
-    );
-    lamp->scale = glm::vec3(0.8f);
-    sceneObjects.push_back(std::move(lamp));
-
-    // Banqueta/Puff COM texturas (tecido, metal, plástico)
-    auto banqueta = std::make_unique<Banqueta>(
-        glm::vec3(1.5f, 0.0f, -2.0f),   // posição
-        0.0f,                            // ângulo
-        fabricTex,                       // textura de tecido (assento estofado)
-        metalTex,                        // textura de metal (haste e base)
-        blackTex                         // textura preta/plástico (rodinhas)
-    );
-    banqueta->scale = glm::vec3(1.0f);
-    sceneObjects.push_back(std::move(banqueta));
-
-    // Sofá COM texturas (tecido e madeira)
-    auto sofa = std::make_unique<Sofa>(
-        glm::vec3(2.5f, 0.0f, 1.5f),    // posição
-        180.0f,                          // ângulo (virado para frente)
-        fabricTex,                       // textura de tecido (assento, encosto, braços)
-        woodTex                          // textura de madeira (pés)
-    );
-    sofa->scale = glm::vec3(1.0f);
-    sceneObjects.push_back(std::move(sofa));
-
-    auto wardrobe = std::make_unique<Wardrobe>(
-        glm::vec3(4.5f, 0.0f, -2.5f),  // posição ajustada
-        0.0f,                           // ângulo
-        woodTex,                        // textura de madeira (parâmetro da função)
-        nullptr                         // SEM textura de metal (teste)
-    );
-    wardrobe->scale = glm::vec3(0.8f);  // escala reduzida
-    sceneObjects.push_back(std::move(wardrobe));
+    sceneObjects.push_back(std::move(sala));
 }
 
 
@@ -230,8 +132,8 @@ int main() {
     std::vector<std::unique_ptr<Object>> sceneObjects;
     createScene(sceneObjects, &texMadeira, &texMetal, &texPlastico, &texBlack, &texTecido, &tex1);
 
-    // Camera
-    Camera camera(glm::vec3(0.0f, 0.0f, 8.0f));
+    // Camera - posicionada para ver toda a sala
+    Camera camera(glm::vec3(0.0f, 2.0f, 6.0f));
     
     globalCamera = &camera;
 

@@ -134,6 +134,7 @@ void TV::init() {
 
 void TV::draw(Shader &shader, glm::mat4 model) {
     model = glm::translate(model, position);
+    model = glm::rotate(model, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
     model = glm::scale(model, scale);
 
     for (auto &p : parts)
