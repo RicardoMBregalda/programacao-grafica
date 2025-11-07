@@ -1,5 +1,4 @@
 #include "Camera.h"
-
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
     : position(position), worldUp(up), yaw(yaw), pitch(pitch),
       sensitivity(0.10f), movementSpeed(2.5f), fov(45.0f)
@@ -7,31 +6,23 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
     front = glm::vec3(0.0f, 0.0f, -1.0f);
     updateCameraVectors();
 }
-
 void Camera::updateCameraVectors() {
-    // Calcula o novo vetor front
     glm::vec3 direction;
     direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
     direction.y = sin(glm::radians(pitch));
     direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
     front = glm::normalize(direction);
-
-    // Recalcula os vetores right e up
     right = glm::normalize(glm::cross(front, worldUp));
     up = glm::normalize(glm::cross(right, front));
 }
-
 glm::mat4 Camera::getViewMatrix() const {
     return glm::lookAt(position, position + front, up);
 }
-
 glm::mat4 Camera::getProjectionMatrix(float aspectRatio, float near, float far) const {
     return glm::perspective(glm::radians(fov), aspectRatio, near, far);
 }
-
 void Camera::processKeyboard(int direction, float deltaTime) {
     float velocity = movementSpeed * deltaTime;
-
     switch(direction) {
         case FORWARD:
             position += front * velocity;
@@ -53,28 +44,21 @@ void Camera::processKeyboard(int direction, float deltaTime) {
             break;
     }
 }
-
 void Camera::rotate(float xOffset, float yOffset) {
     yaw += xOffset * sensitivity;
     pitch += yOffset * sensitivity;
-
-    // Limita o pitch para evitar invers�o da c�mera
     if(pitch > 89.0f)
         pitch = 89.0f;
     if(pitch < -89.0f)
         pitch = -89.0f;
-
     updateCameraVectors();
 }
-
 void Camera::processMouseMovement(float xoffset, float yoffset, bool constrainPitch)
 {
     xoffset *= sensitivity;
     yoffset *= sensitivity;
-
     yaw   += xoffset;
     pitch += yoffset;
-
     if (constrainPitch)
     {
         if (pitch > 89.0f)
@@ -82,49 +66,35 @@ void Camera::processMouseMovement(float xoffset, float yoffset, bool constrainPi
         if (pitch < -89.0f)
             pitch = -89.0f;
     }
-
     updateCameraVectors();
 }
-
 void Camera::resetCameraPosition() {
     position = glm::vec3(0.0f, 0.0f, 8.0f);
     yaw = -90.0f;
     pitch = 0.0f;
     updateCameraVectors();
 }
-
-
-
-// Implementa��o dos Getters
 glm::vec3 Camera::getPosition() const {
     return position;
 }
-
 glm::vec3 Camera::getFront() const {
     return front;
 }
-
 glm::vec3 Camera::getUp() const {
     return up;
 }
-
 float Camera::getFOV() const {
     return fov;
 }
-
-// Implementa��o dos Setters
 void Camera::setPosition(const glm::vec3& pos) {
     position = pos;
 }
-
 void Camera::setSensitivity(float sens) {
     sensitivity = sens;
 }
-
 void Camera::setMovementSpeed(float speed) {
     movementSpeed = speed;
 }
-
 void Camera::setFOV(float newFov) {
     fov = newFov;
 }
