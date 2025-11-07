@@ -29,6 +29,7 @@
 #include "Sala.h"
 #include "Quarto.h"
 #include "Porta.h"
+#include "Banheiro.h"
 
 // Variáveis globais para controle do mouse
 Camera* globalCamera = nullptr;
@@ -148,6 +149,27 @@ int main() {
         &texPiso      // floor (piso)
     );
     sceneObjects.push_back(std::move(quarto));
+
+    // Porta de conexão entre sala e banheiro
+    auto portaBanheiro = std::make_unique<Porta>(
+        glm::vec3(-5.0f, 0.0f, -1.0f),   // Do lado oposto da sala
+        270.0f,                           // Rotação de 90° para ficar perpendicular
+        &texMadeira,                     // Textura de madeira para porta e batente
+        &texMetal                        // Textura de metal para maçanetas
+    );
+    sceneObjects.push_back(std::move(portaBanheiro));
+
+    // Banheiro - do lado esquerdo da sala
+    auto banheiro = std::make_unique<Banheiro>(
+        glm::vec3(-6.51f, 0.0f, -1.5f),  // Do lado esquerdo da sala (oposto ao quarto)
+        0.0f,                            // Sem rotação
+        &texMadeira,                     // Textura de madeira (móvel da pia)
+        &texMetal,                       // Textura de metal (cuba e torneira)
+        &texPlastico,                    // Textura de plástico (vaso sanitário)
+        &texParede,                      // Textura de parede
+        &texPiso                         // Textura de piso
+    );
+    sceneObjects.push_back(std::move(banheiro));
     
     // Camera - posicionada para ver toda a sala
     Camera camera(glm::vec3(0.0f, 2.0f, 6.0f));
