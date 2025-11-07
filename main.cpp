@@ -27,6 +27,8 @@
 #include "Floor.h"
 #include "Sofa.h"
 #include "Sala.h"
+#include "Quarto.h"
+#include "Porta.h"
 
 // Variáveis globais para controle do mouse
 Camera* globalCamera = nullptr;
@@ -104,6 +106,26 @@ void createScene(std::vector<std::unique_ptr<Object>>& sceneObjects,
         stoneTex                       // Textura de pedra/tijolo
     );
     sceneObjects.push_back(std::move(sala));
+
+    // Porta de conexão entre sala e quarto
+    auto porta = std::make_unique<Porta>(
+        glm::vec3(5.0f, 0.0f, 0.0f),   // Posição entre sala e quarto
+        270.0f,                          // Rotação de 90° para ficar perpendicular
+        woodTex,                        // Textura de madeira para porta e batente
+        metalTex                        // Textura de metal para maçanetas
+    );
+    sceneObjects.push_back(std::move(porta));
+
+    auto quarto = std::make_unique<Quarto>(
+        glm::vec3(7.0f, 0.0f, -1.5f),
+        0.0f,
+        woodTex,     // madeira (cama, criado, guarda-roupa, piso)
+        fabricTex,   // tecido (colchão, travesseiro, cúpula da luminária)
+        metalTex,    // metal (puxadores, base da luminária)
+        blackTex,    // bulb (lâmpada)
+        stoneTex     // wall (paredes)
+    );
+    sceneObjects.push_back(std::move(quarto));
 }
 
 

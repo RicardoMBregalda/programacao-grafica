@@ -80,7 +80,6 @@ void Sala::createRoom() {
     rightWall->scale = glm::vec3(8.0f, 3.0f, 0.2f);
     components.push_back(std::move(rightWall));
 }
-
 void Sala::createLivingArea() {
     // Área de estar (lado esquerdo da sala)
     

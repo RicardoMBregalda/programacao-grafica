@@ -16,7 +16,7 @@ class Sofa;
 class Table;
 class Rack;
 class TV;
-class Chair;
+class Chair; 
 
 class Sala : public Object {
 private:

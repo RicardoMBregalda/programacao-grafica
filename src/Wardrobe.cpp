@@ -17,164 +17,75 @@ Wardrobe::Wardrobe(glm::vec3 pos, float ang, Texture* wood, Texture* metal)
 }
 
 void Wardrobe::init() {
-    // ===== Dimensões do guarda-roupa =====
+    // ===== Dimensões do guarda-roupa (bloco sólido simples) =====
     const float width = 1.20f;      // largura
     const float height = 2.00f;     // altura
     const float depth = 0.60f;      // profundidade
-    const float wallThick = 0.03f;  // espessura das paredes
-    const float doorW = width * 0.48f; // largura de cada porta
-    const float handleR = 0.02f;    // raio das maçanetas
-    const float handleL = 0.12f;    // comprimento das maçanetas
-    const float footR = 0.03f;      // raio dos pés
 
-    // ===== Base =====
-    const float baseY = 0.05f;
-    
+    // ===== Corpo principal - um único bloco sólido de madeira =====
     parts.push_back(std::make_unique<Cube>(
-        glm::vec3(0.0f, baseY * 0.5f, 0.0f),
+        glm::vec3(0.0f, height * 0.5f, 0.0f),  // Centrado na altura
         glm::vec3(0.0f),
-        glm::vec3(width, baseY, depth),
+        glm::vec3(width, height, depth),
         0.0f,
         woodTexture  // Textura de madeira
     ));
 
-    // ===== Corpo principal (caixa) =====
-    const float bodyY = baseY + height * 0.5f;
+    // ===== Maçanetas (estilo porta: cilindro + esfera) =====
+    // Parâmetros das maçanetas
+    const float handleY = height * 0.5f;  // Altura média do armário
+    const float handleZ = depth * 0.5f + 0.02f;  // Na frente do armário
+    const float handleCylinderLength = 0.08f;  // Comprimento da haste
+    const float handleCylinderRadius = 0.035f; // Raio da haste
+    const float handleSphereRadius = 0.085f;   // Raio do puxador esférico
     
-    // Parede traseira
-    parts.push_back(std::make_unique<Cube>(
-        glm::vec3(0.0f, bodyY, -depth * 0.5f + wallThick * 0.5f),
-        glm::vec3(0.0f),
-        glm::vec3(width, height, wallThick),
-        0.0f,
-        woodTexture  // Textura de madeira
-    ));
-    
-    // Parede esquerda
-    parts.push_back(std::make_unique<Cube>(
-        glm::vec3(-width * 0.5f + wallThick * 0.5f, bodyY, 0.0f),
-        glm::vec3(0.0f),
-        glm::vec3(wallThick, height, depth),
-        0.0f,
-        woodTexture  // Textura de madeira
-    ));
-    
-    // Parede direita
-    parts.push_back(std::make_unique<Cube>(
-        glm::vec3(width * 0.5f - wallThick * 0.5f, bodyY, 0.0f),
-        glm::vec3(0.0f),
-        glm::vec3(wallThick, height, depth),
-        0.0f,
-        woodTexture  // Textura de madeira
-    ));
-    
-    // Teto
-    parts.push_back(std::make_unique<Cube>(
-        glm::vec3(0.0f, baseY + height - wallThick * 0.5f, 0.0f),
-        glm::vec3(0.0f),
-        glm::vec3(width, wallThick, depth),
-        0.0f,
-        woodTexture  // Textura de madeira
-    ));
-    
-    // Piso interno
-    parts.push_back(std::make_unique<Cube>(
-        glm::vec3(0.0f, baseY + wallThick * 0.5f, 0.0f),
-        glm::vec3(0.0f),
-        glm::vec3(width, wallThick, depth),
-        0.0f,
-        woodTexture  // Textura de madeira
-    ));
+    // Posições das maçanetas (uma para cada "porta" virtual)
+    const float handleOffsetX = width * 0.20f;  // Distância do centro
 
-   
-
-
-
-    // ===== Portas (2 portas) =====
-    const float doorH = height - wallThick * 2.0f;
-    const float doorThick = 0.04f;
-    const float doorZ = depth * 0.5f - doorThick * 0.5f;
-    
-    // Porta esquerda
-    parts.push_back(std::make_unique<Cube>(
-        glm::vec3(-width * 0.25f, bodyY, doorZ),
-        glm::vec3(0.0f),
-        glm::vec3(doorW, doorH, doorThick),
-        0.0f,
-        woodTexture  // Textura de madeira
-    ));
-    
-    // Porta direita
-    parts.push_back(std::make_unique<Cube>(
-        glm::vec3(width * 0.25f, bodyY, doorZ),
-        glm::vec3(0.0f),
-        glm::vec3(doorW, doorH, doorThick),
-        0.0f,
-        woodTexture  // Textura de madeira
-    ));
-
-    // ===== Maçanetas cilíndricas (horizontais) =====
-    const float handleY = bodyY;
-    const float handleZ = doorZ + doorThick * 0.5f + handleR;
-    
-    // Maçaneta esquerda
+    // ===== Maçaneta esquerda =====
+    // Cilindro (haste horizontal)
     parts.push_back(std::make_unique<Cilindro>(
-        glm::vec3(-width * 0.15f, handleY, handleZ),
-        glm::vec3(1.0f, 0.0f, 0.0f),
-        glm::vec3(handleR, handleL, handleR),
-        90.0f, 16,
-        metalTexture  // Textura de metal
+        glm::vec3(-handleOffsetX, handleY, handleZ),
+        glm::vec3(1.0f, 0.0f, 0.0f),  // Rotação para ficar horizontal
+        glm::vec3(handleCylinderRadius, handleCylinderLength, handleCylinderRadius),
+        90.0f,  // 90 graus no eixo X
+        16,
+        metalTexture
     ));
     
-    // Maçaneta direita
-    parts.push_back(std::make_unique<Cilindro>(
-        glm::vec3(width * 0.15f, handleY, handleZ),
-        glm::vec3(1.0f, 0.0f, 0.0f),
-        glm::vec3(handleR, handleL, handleR),
-        90.0f, 16,
-        metalTexture  // Textura de metal
+    // Esfera (puxador na ponta)
+    parts.push_back(std::make_unique<Esfera>(
+        glm::vec3(-handleOffsetX, handleY, handleZ + handleCylinderLength),
+        glm::vec3(0.0f),
+        glm::vec3(handleSphereRadius),
+        0.0f, 12, 24,
+        metalTexture
     ));
 
-    // ===== Pés esféricos (4 cantos) =====
-    const float footY = footR * 0.5f;
-    const float footX = width * 0.5f - footR;
-    const float footZ = depth * 0.5f - footR;
-    
-    parts.push_back(std::make_unique<Esfera>(
-        glm::vec3(footX, footY, footZ),
-        glm::vec3(0.0f),
-        glm::vec3(footR),
-        0.0f, 12, 24,
-        woodTexture  // Textura de madeira
+    // ===== Maçaneta direita =====
+    // Cilindro (haste horizontal)
+    parts.push_back(std::make_unique<Cilindro>(
+        glm::vec3(handleOffsetX, handleY, handleZ),
+        glm::vec3(1.0f, 0.0f, 0.0f),  // Rotação para ficar horizontal
+        glm::vec3(handleCylinderRadius, handleCylinderLength, handleCylinderRadius),
+        90.0f,  // 90 graus no eixo X
+        16,
+        metalTexture
     ));
     
+    // Esfera (puxador na ponta)
     parts.push_back(std::make_unique<Esfera>(
-        glm::vec3(-footX, footY, footZ),
+        glm::vec3(handleOffsetX, handleY, handleZ + handleCylinderLength),
         glm::vec3(0.0f),
-        glm::vec3(footR),
+        glm::vec3(handleSphereRadius),
         0.0f, 12, 24,
-        woodTexture  // Textura de madeira
-    ));
-    
-    parts.push_back(std::make_unique<Esfera>(
-        glm::vec3(footX, footY, -footZ),
-        glm::vec3(0.0f),
-        glm::vec3(footR),
-        0.0f, 12, 24,
-        woodTexture  // Textura de madeira
-    ));
-    
-    parts.push_back(std::make_unique<Esfera>(
-        glm::vec3(-footX, footY, -footZ),
-        glm::vec3(0.0f),
-        glm::vec3(footR),
-        0.0f, 12, 24,
-        woodTexture  // Textura de madeira
+        metalTexture
     ));
 }
 
 void Wardrobe::draw(Shader &shader, glm::mat4 model) {
     model = glm::translate(model, position);
+    model = glm::rotate(model, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
     model = glm::scale(model, scale);
 
     for (auto &p : parts)
