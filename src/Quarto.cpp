@@ -134,11 +134,13 @@ void Quarto::createFurniture() {
     // Parede direita está em X = 2.0. Wardrobe (Wardrobe.cpp) tem 0.60D.
     // Posicionar em X = 2.0 - (0.60/2.0) = 1.7
     auto wardrobe = std::make_unique<Wardrobe>(
-        glm::vec3(1.7f, 0.0f, 0.5f),
+        glm::vec3(1.6f, 0.0f, 0.5f),
         270.0f, // Rotação para ficar de frente para o centro (X negativo)
         woodTexture,
         metalTexture
     );
+    wardrobe->scale = glm::vec3(1.2f);
+
     components.push_back(std::move(wardrobe));
 }
 
