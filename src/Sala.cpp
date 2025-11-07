@@ -13,7 +13,8 @@
 
 Sala::Sala(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang,
            Texture* woodTex, Texture* metalTex, Texture* plasticTex,
-           Texture* blackTex, Texture* fabricTex, Texture* fabricTex2, Texture* stoneTex)
+           Texture* blackTex, Texture* fabricTex, Texture* fabricTex2, Texture* stoneTex,
+           Texture* wallTex, Texture* floorTex)
     : Object(pos, rot, scl, ang),
       woodTexture(woodTex),
       metalTexture(metalTex),
@@ -21,13 +22,16 @@ Sala::Sala(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang,
       blackTexture(blackTex),
       fabricTexture(fabricTex),
       fabricTexture2(fabricTex2),
-      stoneTexture(stoneTex) {
+      stoneTexture(stoneTex),
+      wallTexture(wallTex),
+      floorTexture(floorTex) {
     init();
 }
 
 Sala::Sala(glm::vec3 pos, float ang,
            Texture* woodTex, Texture* metalTex, Texture* plasticTex,
-           Texture* blackTex, Texture* fabricTex, Texture* fabricTex2, Texture* stoneTex)
+           Texture* blackTex, Texture* fabricTex, Texture* fabricTex2, Texture* stoneTex,
+           Texture* wallTex, Texture* floorTex)
     : Object(pos, glm::vec3(0.0f), glm::vec3(1.0f), ang),
       woodTexture(woodTex),
       metalTexture(metalTex),
@@ -35,7 +39,9 @@ Sala::Sala(glm::vec3 pos, float ang,
       blackTexture(blackTex),
       fabricTexture(fabricTex),
       fabricTexture2(fabricTex2),
-      stoneTexture(stoneTex) {
+      stoneTexture(stoneTex),
+      wallTexture(wallTex),
+      floorTexture(floorTex) {
     init();
 }
 
@@ -52,7 +58,7 @@ void Sala::createRoom() {
     auto floor = std::make_unique<Floor>(
         glm::vec3(0.0f, 0.00f, 0.0f),  // Ligeiramente abaixo do nível 0
         0.0f,
-        woodTexture
+        floorTexture
     );
     floor->scale = glm::vec3(10.0f, 0.1f, 8.0f);
     components.push_back(std::move(floor));
@@ -61,7 +67,7 @@ void Sala::createRoom() {
     auto backWall = std::make_unique<Wall>(
         glm::vec3(0.0f, 1.5f, -4.0f),
         0.0f,
-        stoneTexture
+        wallTexture
     );
     backWall->scale = glm::vec3(10.0f, 3.0f, 0.2f);
     components.push_back(std::move(backWall));
@@ -70,7 +76,7 @@ void Sala::createRoom() {
     auto leftWall = std::make_unique<Wall>(
         glm::vec3(-5.0f, 1.5f, 0.0f),
         90.0f,
-        stoneTexture
+        wallTexture
     );
     leftWall->scale = glm::vec3(8.0f, 3.0f, 0.2f);
     components.push_back(std::move(leftWall));
@@ -79,7 +85,7 @@ void Sala::createRoom() {
     auto rightWall = std::make_unique<Wall>(
         glm::vec3(5.0f, 1.5f, 0.0f),
         90.0f,
-        stoneTexture
+        wallTexture
     );
     rightWall->scale = glm::vec3(8.0f, 3.0f, 0.2f);
     components.push_back(std::move(rightWall));

@@ -37,101 +37,55 @@ float lastX = 512.0f;
 float lastY = 384.0f; 
 
 //peguei daqui: https://learnopengl.com/Getting-started/Camera
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
-{
-    if (firstMouse)
-    {
+void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+    if (firstMouse) {
         lastX = xpos;
         lastY = ypos;
         firstMouse = false;
     }
-  
+
     float xoffset = xpos - lastX;
     float yoffset = lastY - ypos;
     lastX = xpos;
     lastY = ypos;
 
-    if (globalCamera != nullptr)
-    {
+    if (globalCamera != nullptr) {
         globalCamera->processMouseMovement(xoffset, yoffset);
     }
 }
 
 void verifyKeyPress(Camera& camera, Application& app, float deltaTime) {
-            if (glfwGetKey(app.getWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
-            glfwSetWindowShouldClose(app.getWindow(), true);
+    if (glfwGetKey(app.getWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(app.getWindow(), true);
 
-        // Movimentação básica
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_W) == GLFW_PRESS)
-            camera.processKeyboard(Camera::FORWARD, deltaTime);
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_S) == GLFW_PRESS)
-            camera.processKeyboard(Camera::BACKWARD, deltaTime);
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_A) == GLFW_PRESS)
-            camera.processKeyboard(Camera::LEFT, deltaTime);
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_D) == GLFW_PRESS)
-            camera.processKeyboard(Camera::RIGHT, deltaTime);
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
-            camera.processKeyboard(Camera::UP, deltaTime);
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-            camera.processKeyboard(Camera::DOWN, deltaTime);
+    // Movimentação básica
+    if (glfwGetKey(app.getWindow(), GLFW_KEY_W) == GLFW_PRESS)
+        camera.processKeyboard(Camera::FORWARD, deltaTime);
+    if (glfwGetKey(app.getWindow(), GLFW_KEY_S) == GLFW_PRESS)
+        camera.processKeyboard(Camera::BACKWARD, deltaTime);
+    if (glfwGetKey(app.getWindow(), GLFW_KEY_A) == GLFW_PRESS)
+        camera.processKeyboard(Camera::LEFT, deltaTime);
+    if (glfwGetKey(app.getWindow(), GLFW_KEY_D) == GLFW_PRESS)
+        camera.processKeyboard(Camera::RIGHT, deltaTime);
+    if (glfwGetKey(app.getWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
+        camera.processKeyboard(Camera::UP, deltaTime);
+    if (glfwGetKey(app.getWindow(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+        camera.processKeyboard(Camera::DOWN, deltaTime);
 
-        // Reseta a posição da câmera
-        if(glfwGetKey(app.getWindow(), GLFW_KEY_BACKSPACE) == GLFW_PRESS)
-            camera.resetCameraPosition();
+    // Reseta a posição da câmera
+    if (glfwGetKey(app.getWindow(), GLFW_KEY_BACKSPACE) == GLFW_PRESS)
+        camera.resetCameraPosition();
 
-        // Rotação com setas
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_UP) == GLFW_PRESS)
-            camera.rotate(0.0f, 1.0f);
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_DOWN) == GLFW_PRESS)
-            camera.rotate(0.0f, -1.0f);
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_LEFT) == GLFW_PRESS)
-            camera.rotate(-1.0f, 0.0f);
-        if (glfwGetKey(app.getWindow(), GLFW_KEY_RIGHT) == GLFW_PRESS)
-            camera.rotate(1.0f, 0.0f);
+    // Rotação com setas
+    if (glfwGetKey(app.getWindow(), GLFW_KEY_UP) == GLFW_PRESS)
+        camera.rotate(0.0f, 1.0f);
+    if (glfwGetKey(app.getWindow(), GLFW_KEY_DOWN) == GLFW_PRESS)
+        camera.rotate(0.0f, -1.0f);
+    if (glfwGetKey(app.getWindow(), GLFW_KEY_LEFT) == GLFW_PRESS)
+        camera.rotate(-1.0f, 0.0f);
+    if (glfwGetKey(app.getWindow(), GLFW_KEY_RIGHT) == GLFW_PRESS)
+        camera.rotate(1.0f, 0.0f);
 }
-
-
-void createScene(std::vector<std::unique_ptr<Object>>& sceneObjects, 
-                 Texture* woodTex, Texture* metalTex, Texture* plasticTex, Texture* blackTex, 
-                 Texture* fabricTex, Texture* fabricTex2, Texture* stoneTex) {
-    
-    // Cria a sala completa com todos os móveis organizados
-    auto sala = std::make_unique<Sala>(
-        glm::vec3(0.0f, 0.0f, 0.0f),  // Posição central
-        0.0f,                          // Sem rotação
-        woodTex,                       // Textura de madeira
-        metalTex,                      // Textura de metal
-        plasticTex,                    // Textura de plástico
-        blackTex,                      // Textura preta
-        fabricTex,                     // Textura de tecido (sofá)
-        fabricTex2,                    // Textura de tecido 2 (tapete)
-        stoneTex                       // Textura de pedra/tijolo
-    );
-    sceneObjects.push_back(std::move(sala));
-
-    // Porta de conexão entre sala e quarto
-    auto porta = std::make_unique<Porta>(
-        glm::vec3(5.0f, 0.0f, 0.0f),   // Posição entre sala e quarto
-        270.0f,                          // Rotação de 90° para ficar perpendicular
-        woodTex,                        // Textura de madeira para porta e batente
-        metalTex                        // Textura de metal para maçanetas
-    );
-    sceneObjects.push_back(std::move(porta));
-
-    auto quarto = std::make_unique<Quarto>(
-        glm::vec3(7.0f, 0.0f, -1.5f),
-        0.0f,
-        woodTex,     // madeira (cama, criado, guarda-roupa, piso)
-        fabricTex,   // tecido para colchão
-        fabricTex2,  // tecido para travesseiros
-        metalTex,    // metal (puxadores, base da luminária)
-        blackTex,    // bulb (lâmpada)
-        stoneTex     // wall (paredes)
-    );
-    sceneObjects.push_back(std::move(quarto));
-}
-
-
 
 int main() {
     // Cria janela e inicializa OpenGL
@@ -145,19 +99,56 @@ int main() {
     // Carrega texturas
     Texture tex1("pedra-28.jpg");
     Texture texMadeira("madeira.jpg");
-    Texture texMetal("metal.png");
-    Texture texPlastico("plastico.jpg");  
-    Texture texBlack("black.jpg");
-    Texture texTecido("tecido.jpg");       // Textura de tecido para colchão
-    Texture texTecido2("tecido_claro.jpg");      // Textura de tecido para travesseiros (pode ser a mesma ou diferente)
+    Texture texMetal("metal.jpg");
+    Texture texPlastico("plastico.jpg");
+    Texture texBlack("black.png");
+    Texture texTecido("tecido.jpg");      
+    Texture texTecido2("tecido_claro.jpg");
+    Texture texParede("wall.jpg");
+    Texture texPiso("floor.jpg");
 
     shader.setInt("texture1", 0);
     shader.setInt("texture2", 1);
 
-    // Cria cena (passando todas as texturas)
     std::vector<std::unique_ptr<Object>> sceneObjects;
-    createScene(sceneObjects, &texMadeira, &texMetal, &texPlastico, &texBlack, &texTecido, &texTecido2, &tex1);
+    
+    auto sala = std::make_unique<Sala>(
+        glm::vec3(0.0f, 0.0f, 0.0f),  // Posição central
+        0.0f,                          // Sem rotação
+        &texMadeira,                   // Textura de madeira
+        &texMetal,                     // Textura de metal
+        &texPlastico,                  // Textura de plástico
+        &texBlack,                     // Textura preta
+        &texTecido,                    // Textura de tecido (sofá)
+        &texTecido2,                   // Textura de tecido 2 (tapete)
+        &tex1,                         // Textura de pedra/tijolo
+        &texParede,                    // Textura de parede
+        &texPiso                       // Textura de piso
+    );
+    sceneObjects.push_back(std::move(sala));
 
+    // Porta de conexão entre sala e quarto
+    auto porta = std::make_unique<Porta>(
+        glm::vec3(5.0f, 0.0f, 0.0f),   // Posição entre sala e quarto
+        270.0f,                         // Rotação de 270° para ficar perpendicular
+        &texMadeira,                    // Textura de madeira para porta e batente
+        &texMetal                       // Textura de metal para maçanetas
+    );
+    sceneObjects.push_back(std::move(porta));
+
+    auto quarto = std::make_unique<Quarto>(
+        glm::vec3(7.0f, 0.0f, -1.5f),
+        0.0f,
+        &texMadeira,  // madeira (cama, criado, guarda-roupa)
+        &texTecido,   // tecido para colchão
+        &texTecido2,  // tecido para travesseiros
+        &texMetal,    // metal (puxadores, base da luminária)
+        &texBlack,    // bulb (lâmpada)
+        &texParede,   // wall (paredes)
+        &texPiso      // floor (piso)
+    );
+    sceneObjects.push_back(std::move(quarto));
+    
     // Camera - posicionada para ver toda a sala
     Camera camera(glm::vec3(0.0f, 2.0f, 6.0f));
     
@@ -168,7 +159,7 @@ int main() {
     
     // Configura o mouse para controlar a câmera
     glfwSetInputMode(app.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetCursorPosCallback(app.getWindow(), mouse_callback);  
+    glfwSetCursorPosCallback(app.getWindow(), mouse_callback);
 
     // Loop principal
     while (!glfwWindowShouldClose(app.getWindow())) {
@@ -178,7 +169,7 @@ int main() {
 
         verifyKeyPress(camera, app, deltaTime);
 
-        glClearColor(0.7f, 0.5f, 0.1f, 1.0f);
+        glClearColor(0.53f, 0.81f, 0.92f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader.use();

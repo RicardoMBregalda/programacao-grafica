@@ -17,8 +17,8 @@ TARGET = $(BIN_DIR)\\GLFW_Cubo_OO.exe
 # Bibliotecas
 LIBS = C:\glfw-3.4.bin.WIN64\lib-mingw-w64\libglfw3.a \
        C:\glfw-3.4.bin.WIN64\lib-mingw-w64\libglfw3dll.a \
-       "C:\Program Files\CodeBlocks\mingw64\x86_64-w64-mingw32\lib\libgdi32.a" \
-       "C:\Program Files\CodeBlocks\mingw64\x86_64-w64-mingw32\lib\libopengl32.a" \
+  	   "C:\Program Files\CodeBlocks\MinGW\x86_64-w64-mingw32\lib\libgdi32.a" \
+       "C:\Program Files\CodeBlocks\MinGW\x86_64-w64-mingw32\lib\libopengl32.a" \
        C:\glew-2.1.0\lib\Release\x64\glew32.lib \
        C:\glew-2.1.0\lib\Release\x64\glew32s.lib
 

@@ -10,14 +10,15 @@
 
 Quarto::Quarto(glm::vec3 pos, float ang,
                Texture* woodTex, Texture* fabricTex, Texture* pillowFabricTex,
-               Texture* metalTex, Texture* bulbTex, Texture* wallTex)
+               Texture* metalTex, Texture* bulbTex, Texture* wallTex, Texture* floorTex)
     : Object(pos, glm::vec3(0.0f), glm::vec3(1.0f), ang),
       woodTexture(woodTex),
       fabricTexture(fabricTex),
       pillowFabricTexture(pillowFabricTex),
       metalTexture(metalTex),
       bulbTexture(bulbTex),
-      wallTexture(wallTex) {
+      wallTexture(wallTex),
+      floorTexture(floorTex) {
     init();
 }
 
@@ -36,7 +37,7 @@ void Quarto::createRoom() {
     auto floor = std::make_unique<Floor>(
         glm::vec3(0.0f, 0.00f, 0.0f),
         0.0f,
-        woodTexture
+        floorTexture
     );
     floor->scale = glm::vec3(roomW, 0.1f, roomD);
     components.push_back(std::move(floor));

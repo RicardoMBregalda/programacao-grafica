@@ -30,6 +30,8 @@ private:
     Texture* fabricTexture;
     Texture* fabricTexture2;  // Segunda textura de tecido para o tapete
     Texture* stoneTexture;
+    Texture* wallTexture;
+    Texture* floorTexture;
 
     // Componentes da sala
     std::vector<std::unique_ptr<Object>> components;
@@ -46,7 +48,9 @@ public:
          Texture* blackTex = nullptr,
          Texture* fabricTex = nullptr,
          Texture* fabricTex2 = nullptr,
-         Texture* stoneTex = nullptr);
+         Texture* stoneTex = nullptr,
+         Texture* wallTex = nullptr,
+         Texture* floorTex = nullptr);
     
     Sala(glm::vec3 pos, float ang,
          Texture* woodTex = nullptr, 
@@ -55,7 +59,9 @@ public:
          Texture* blackTex = nullptr,
          Texture* fabricTex = nullptr,
          Texture* fabricTex2 = nullptr,
-         Texture* stoneTex = nullptr);
+         Texture* stoneTex = nullptr,
+         Texture* wallTex = nullptr,
+         Texture* floorTex = nullptr);
 
     void init();
     void draw(Shader& shader, glm::mat4 parentTransform) override;

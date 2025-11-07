@@ -26,6 +26,7 @@ private:
     Texture* metalTexture;
     Texture* bulbTexture;
     Texture* wallTexture;
+    Texture* floorTexture;
 
     // Componentes do quarto
     std::vector<std::unique_ptr<Object>> components;
@@ -40,7 +41,8 @@ public:
            Texture* pillowFabricTex = nullptr,
            Texture* metalTex = nullptr,
            Texture* bulbTex = nullptr,
-           Texture* wallTex = nullptr);
+           Texture* wallTex = nullptr,
+           Texture* floorTex = nullptr);
 
     void init();
     void draw(Shader& shader, glm::mat4 parentTransform) override;
