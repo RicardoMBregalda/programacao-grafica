@@ -21,7 +21,8 @@ class Quarto : public Object {
 private:
     // Texturas
     Texture* woodTexture;
-    Texture* fabricTexture;
+    Texture* fabricTexture;         // Tecido para colchão
+    Texture* pillowFabricTexture;   // Tecido para travesseiros
     Texture* metalTexture;
     Texture* bulbTexture;
     Texture* wallTexture;
@@ -36,6 +37,7 @@ public:
     Quarto(glm::vec3 pos, float ang,
            Texture* woodTex = nullptr, 
            Texture* fabricTex = nullptr,
+           Texture* pillowFabricTex = nullptr,
            Texture* metalTex = nullptr,
            Texture* bulbTex = nullptr,
            Texture* wallTex = nullptr);

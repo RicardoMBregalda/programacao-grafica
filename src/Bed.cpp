@@ -5,13 +5,20 @@
 #include "Cilindro.h"
 #include "Texture.h"
 
-Bed::Bed(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang, Texture* wood, Texture* fabric)
-    : Object(pos, rot, scl, ang), woodTexture(wood), fabricTexture(fabric) {
+Bed::Bed(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang, 
+         Texture* wood, Texture* mattressFabric, Texture* pillowFabric)
+    : Object(pos, rot, scl, ang), 
+      woodTexture(wood), 
+      mattressFabricTexture(mattressFabric), 
+      pillowFabricTexture(pillowFabric) {
     init();
 }
 
-Bed::Bed(glm::vec3 pos, float ang, Texture* wood, Texture* fabric)
-    : Object(pos, glm::vec3(0.0f), glm::vec3(1.0f), ang), woodTexture(wood), fabricTexture(fabric) {
+Bed::Bed(glm::vec3 pos, float ang, Texture* wood, Texture* mattressFabric, Texture* pillowFabric)
+    : Object(pos, glm::vec3(0.0f), glm::vec3(1.0f), ang), 
+      woodTexture(wood), 
+      mattressFabricTexture(mattressFabric), 
+      pillowFabricTexture(pillowFabric) {
     init();
 }
 
@@ -38,13 +45,13 @@ void Bed::init() {
         woodTexture  // Textura de madeira na base
     ));
 
-    // ===== Colchão - USA fabricTexture =====
+    // ===== Colchão - USA mattressFabricTexture =====
     parts.push_back(std::make_unique<Cube>(
         glm::vec3(0.0f, mattressY, 0.0f),
         glm::vec3(0.0f),
         glm::vec3(bedW - 0.1f, mattressH, bedL - 0.1f),
         0.0f,
-        fabricTexture  // Textura de tecido no colchão
+        mattressFabricTexture  // Textura de tecido para o colchão
     ));
 
     // ===== Cabeceira - USA woodTexture =====
@@ -56,8 +63,8 @@ void Bed::init() {
         woodTexture  // Textura de madeira na cabeceira
     ));
 
-    // ===== Travesseiros - USA fabricTexture =====
-    const float pillowW = 0.48f;
+    // ===== Travesseiros - USA pillowFabricTexture =====
+    const float pillowW = 0.58f;
     const float pillowL = 0.33f;
     const float pillowH = 0.11f;
     const float pillowY = frameH + mattressH + pillowH * 0.5f;
@@ -69,7 +76,7 @@ void Bed::init() {
         glm::vec3(0.0f),
         glm::vec3(pillowW, pillowH, pillowL),
         0.0f,
-        fabricTexture  // Textura de tecido no travesseiro
+        pillowFabricTexture  // Textura de tecido para os travesseiros
     ));
 
     // Travesseiro direito
@@ -78,7 +85,7 @@ void Bed::init() {
         glm::vec3(0.0f),
         glm::vec3(pillowW, pillowH, pillowL),
         0.0f,
-        fabricTexture  // Textura de tecido no travesseiro
+        pillowFabricTexture  // Textura de tecido para os travesseiros
     ));
 
     // ===== Pés da cama (4 pés cilíndricos) - USA woodTexture =====

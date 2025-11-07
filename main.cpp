@@ -92,7 +92,8 @@ void verifyKeyPress(Camera& camera, Application& app, float deltaTime) {
 
 
 void createScene(std::vector<std::unique_ptr<Object>>& sceneObjects, 
-                 Texture* woodTex, Texture* metalTex, Texture* plasticTex, Texture* blackTex, Texture* fabricTex, Texture* stoneTex) {
+                 Texture* woodTex, Texture* metalTex, Texture* plasticTex, Texture* blackTex, 
+                 Texture* fabricTex, Texture* fabricTex2, Texture* stoneTex) {
     
     // Cria a sala completa com todos os móveis organizados
     auto sala = std::make_unique<Sala>(
@@ -120,7 +121,8 @@ void createScene(std::vector<std::unique_ptr<Object>>& sceneObjects,
         glm::vec3(7.0f, 0.0f, -1.5f),
         0.0f,
         woodTex,     // madeira (cama, criado, guarda-roupa, piso)
-        fabricTex,   // tecido (colchão, travesseiro, cúpula da luminária)
+        fabricTex,   // tecido para colchão
+        fabricTex2,  // tecido para travesseiros
         metalTex,    // metal (puxadores, base da luminária)
         blackTex,    // bulb (lâmpada)
         stoneTex     // wall (paredes)
@@ -145,14 +147,15 @@ int main() {
     Texture texMetal("metal.png");
     Texture texPlastico("plastico.jpg");  
     Texture texBlack("black.jpg");
-    Texture texTecido("tecido.jpg");      // Nova textura de tecido
+    Texture texTecido("tecido.jpg");       // Textura de tecido para colchão
+    Texture texTecido2("tecido_claro.jpg");      // Textura de tecido para travesseiros (pode ser a mesma ou diferente)
 
     shader.setInt("texture1", 0);
     shader.setInt("texture2", 1);
 
     // Cria cena (passando todas as texturas)
     std::vector<std::unique_ptr<Object>> sceneObjects;
-    createScene(sceneObjects, &texMadeira, &texMetal, &texPlastico, &texBlack, &texTecido, &tex1);
+    createScene(sceneObjects, &texMadeira, &texMetal, &texPlastico, &texBlack, &texTecido, &texTecido2, &tex1);
 
     // Camera - posicionada para ver toda a sala
     Camera camera(glm::vec3(0.0f, 2.0f, 6.0f));

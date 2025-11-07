@@ -9,11 +9,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 Quarto::Quarto(glm::vec3 pos, float ang,
-               Texture* woodTex, Texture* fabricTex, Texture* metalTex,
-               Texture* bulbTex, Texture* wallTex)
+               Texture* woodTex, Texture* fabricTex, Texture* pillowFabricTex,
+               Texture* metalTex, Texture* bulbTex, Texture* wallTex)
     : Object(pos, glm::vec3(0.0f), glm::vec3(1.0f), ang),
       woodTexture(woodTex),
       fabricTexture(fabricTex),
+      pillowFabricTexture(pillowFabricTex),
       metalTexture(metalTex),
       bulbTexture(bulbTex),
       wallTexture(wallTex) {
@@ -77,7 +78,8 @@ void Quarto::createFurniture() {
         glm::vec3(0.0f, 0.0f, -1.4f), // Posição (0, 0, -1.4) no quarto
         180.0f, // Rotação para ficar de frente para Z positivo
         woodTexture,
-        fabricTexture
+        fabricTexture,        // Textura do colchão
+        pillowFabricTexture   // Textura dos travesseiros
     );
     components.push_back(std::move(bed));
 
