@@ -16,7 +16,9 @@ class Sofa;
 class Table;
 class Rack;
 class TV;
-class Chair; 
+class Chair;
+class Tapete;
+class Prato; 
 
 class Sala : public Object {
 private:
@@ -26,6 +28,7 @@ private:
     Texture* plasticTexture;
     Texture* blackTexture;
     Texture* fabricTexture;
+    Texture* fabricTexture2;  // Segunda textura de tecido para o tapete
     Texture* stoneTexture;
 
     // Componentes da sala
@@ -42,6 +45,7 @@ public:
          Texture* plasticTex = nullptr,
          Texture* blackTex = nullptr,
          Texture* fabricTex = nullptr,
+         Texture* fabricTex2 = nullptr,
          Texture* stoneTex = nullptr);
     
     Sala(glm::vec3 pos, float ang,
@@ -50,6 +54,7 @@ public:
          Texture* plasticTex = nullptr,
          Texture* blackTex = nullptr,
          Texture* fabricTex = nullptr,
+         Texture* fabricTex2 = nullptr,
          Texture* stoneTex = nullptr);
 
     void init();

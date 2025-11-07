@@ -103,7 +103,8 @@ void createScene(std::vector<std::unique_ptr<Object>>& sceneObjects,
         metalTex,                      // Textura de metal
         plasticTex,                    // Textura de plástico
         blackTex,                      // Textura preta
-        fabricTex,                     // Textura de tecido
+        fabricTex,                     // Textura de tecido (sofá)
+        fabricTex2,                    // Textura de tecido 2 (tapete)
         stoneTex                       // Textura de pedra/tijolo
     );
     sceneObjects.push_back(std::move(sala));

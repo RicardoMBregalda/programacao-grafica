@@ -6,31 +6,35 @@
 #include "Rack.h"
 #include "TV.h"
 #include "Chair.h"
+#include "Tapete.h"
+#include "Prato.h"
 #include "Texture.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 Sala::Sala(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang,
            Texture* woodTex, Texture* metalTex, Texture* plasticTex,
-           Texture* blackTex, Texture* fabricTex, Texture* stoneTex)
+           Texture* blackTex, Texture* fabricTex, Texture* fabricTex2, Texture* stoneTex)
     : Object(pos, rot, scl, ang),
       woodTexture(woodTex),
       metalTexture(metalTex),
       plasticTexture(plasticTex),
       blackTexture(blackTex),
       fabricTexture(fabricTex),
+      fabricTexture2(fabricTex2),
       stoneTexture(stoneTex) {
     init();
 }
 
 Sala::Sala(glm::vec3 pos, float ang,
            Texture* woodTex, Texture* metalTex, Texture* plasticTex,
-           Texture* blackTex, Texture* fabricTex, Texture* stoneTex)
+           Texture* blackTex, Texture* fabricTex, Texture* fabricTex2, Texture* stoneTex)
     : Object(pos, glm::vec3(0.0f), glm::vec3(1.0f), ang),
       woodTexture(woodTex),
       metalTexture(metalTex),
       plasticTexture(plasticTex),
       blackTexture(blackTex),
       fabricTexture(fabricTex),
+      fabricTexture2(fabricTex2),
       stoneTexture(stoneTex) {
     init();
 }
@@ -93,6 +97,15 @@ void Sala::createLivingArea() {
     sofa->scale = glm::vec3(1.0f);
     components.push_back(std::move(sofa));
 
+    // TAPETE (embaixo da mesa de centro)
+    auto tapete = std::make_unique<Tapete>(
+        glm::vec3(-1.8f, 0.0f, -1.8f),  // Mesma posição X e Z da mesa de centro
+        0.0f,
+        fabricTexture2  // Textura de tecido 2 (diferente do sofá)
+    );
+    tapete->scale = glm::vec3(3.0f);
+    components.push_back(std::move(tapete));
+
     // MESA DE CENTRO (entre sofá e TV)
     auto coffeeTable = std::make_unique<Table>(
         glm::vec3(-1.8f, 0.0f, -1.8f),
@@ -150,7 +163,7 @@ void Sala::createDiningArea() {
 
     // Cadeira 2 - Lado ESQUERDO - TRASEIRA
     auto chair2 = std::make_unique<Chair>(
-        glm::vec3(1.6f, 0.0f, -1.5f),
+        glm::vec3(1.6f, 0.0f, -1.4f),
         90.0f,
         woodTexture,
         fabricTexture
@@ -197,6 +210,65 @@ void Sala::createDiningArea() {
     );
     chair6->scale = glm::vec3(0.65f);
     components.push_back(std::move(chair6));
+
+    // PRATOS em cima da mesa de jantar
+    // Mesa está em Y=0, altura da mesa é ~0.70m (Table.cpp), então pratos em Y=0.70
+    const float tableHeight = 0.77f;
+    const float plateY = tableHeight;
+
+    // Prato 1 - Esquerda Frontal (frente à cadeira 1)
+    auto plate1 = std::make_unique<Prato>(
+        glm::vec3(1.85f, plateY, -2.3f),
+        0.0f,
+        plasticTexture
+    );
+    plate1->scale = glm::vec3(3.0f);
+    components.push_back(std::move(plate1));
+
+    // Prato 2 - Esquerda Traseira (frente à cadeira 2)
+    auto plate2 = std::make_unique<Prato>(
+        glm::vec3(1.85f, plateY, -1.4f),
+        0.0f,
+        plasticTexture
+    );
+    plate2->scale = glm::vec3(3.0f);
+    components.push_back(std::move(plate2));
+
+    // Prato 3 - Direita Frontal (frente à cadeira 3)
+    auto plate3 = std::make_unique<Prato>(
+        glm::vec3(2.55f, plateY, -2.3f),
+        0.0f,
+        plasticTexture
+    );
+    plate3->scale = glm::vec3(3.0f);
+    components.push_back(std::move(plate3));
+
+    // Prato 4 - Direita Traseira (frente à cadeira 4)
+    auto plate4 = std::make_unique<Prato>(
+        glm::vec3(2.55f, plateY, -1.4f),
+        0.0f,
+        plasticTexture
+    );
+    plate4->scale = glm::vec3(3.0f);
+    components.push_back(std::move(plate4));
+
+    // Prato 5 - Cabeceira Frontal (frente à cadeira 5)
+    auto plate5 = std::make_unique<Prato>(
+        glm::vec3(2.2f, plateY, -2.6f),
+        0.0f,
+        plasticTexture
+    );
+    plate5->scale = glm::vec3(3.0f);
+    components.push_back(std::move(plate5));
+
+    // Prato 6 - Cabeceira Traseira (frente à cadeira 6)
+    auto plate6 = std::make_unique<Prato>(
+        glm::vec3(2.2f, plateY, -1.2f),
+        0.0f,
+        plasticTexture
+    );
+    plate6->scale = glm::vec3(3.0f);
+    components.push_back(std::move(plate6));
 }
 
 void Sala::draw(Shader& shader, glm::mat4 parentTransform) {
