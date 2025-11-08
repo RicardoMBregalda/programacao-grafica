@@ -27,11 +27,11 @@ void Sala::init() {
 void Sala::createRoom() {
     auto& tex = TextureManager::getInstance();
     auto floor = std::make_unique<Floor>(
-        glm::vec3(0.0f, 0.00f, 0.0f), 
+        glm::vec3(0.0f, 0.00f, -1.25f), 
         0.0f,
         tex.floor.get()
     );
-    floor->scale = glm::vec3(10.0f, 0.1f, 8.0f);
+    floor->scale = glm::vec3(10.0f, 0.1f, 5.5f);
     components.push_back(std::move(floor));
     auto backWall = std::make_unique<Wall>(
         glm::vec3(0.0f, 1.5f, -4.0f),
@@ -41,21 +41,21 @@ void Sala::createRoom() {
     backWall->scale = glm::vec3(10.0f, 3.0f, 0.2f);
     components.push_back(std::move(backWall));
     auto leftWall = std::make_unique<Wall>(
-        glm::vec3(-5.0f, 1.5f, 0.0f),
+        glm::vec3(-5.0f, 1.5f, -1.25f),
         90.0f,
         tex.wall.get()
     );
-    leftWall->scale = glm::vec3(8.0f, 3.0f, 0.2f);
+    leftWall->scale = glm::vec3(5.5f, 3.0f, 0.2f);
     components.push_back(std::move(leftWall));
     auto rightWall = std::make_unique<Wall>(
-        glm::vec3(5.0f, 1.5f, 0.0f),
+        glm::vec3(5.0f, 1.5f, -1.25f),
         90.0f,
         tex.wall.get()
     );
-    rightWall->scale = glm::vec3(8.0f, 3.0f, 0.2f);
+    rightWall->scale = glm::vec3(5.5f, 3.0f, 0.2f);
     components.push_back(std::move(rightWall));
     auto frontWall = std::make_unique<Wall>(
-        glm::vec3(0.0f, 1.5f, 4.0f),
+        glm::vec3(0.0f, 1.5f, 1.5f),
         0.0f,
         tex.wall.get()
     );

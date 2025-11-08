@@ -5,6 +5,8 @@
 #include "Nightstand.h"
 #include "Lamp.h"
 #include "Wardrobe.h"
+#include "Rack.h"
+#include "TV.h"
 #include "TextureManager.h"
 #include <glm/gtc/matrix_transform.hpp>
 Quarto::Quarto(glm::vec3 pos, float ang)
@@ -104,6 +106,24 @@ void Quarto::createFurniture() {
     );
     wardrobe->scale = glm::vec3(1.2f);
     components.push_back(std::move(wardrobe));
+
+    auto rack = std::make_unique<Rack>(
+        glm::vec3(0.0f, 0.0f, 1.8f),
+        180.0f,
+        tex.wood3.get(),
+        tex.metal.get()
+    );
+    rack->scale = glm::vec3(1.0f);
+    components.push_back(std::move(rack));
+
+    auto tv = std::make_unique<TV>(
+        glm::vec3(0.0f, 0.50f, 1.8f),
+        180.0f,
+        tex.black.get(),
+        tex.plastic.get()
+    );
+    tv->scale = glm::vec3(1.0f);
+    components.push_back(std::move(tv));
 }
 void Quarto::draw(Shader& shader, glm::mat4 parentTransform) {
     glm::mat4 modelMatrix = glm::mat4(1.0f);

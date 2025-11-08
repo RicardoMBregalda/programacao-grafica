@@ -29,6 +29,7 @@ private:
         wardrobe = std::make_unique<Texture>("texturas/wardrobe.jpg");
         table = std::make_unique<Texture>("texturas/table.jpg");
         bedframe = std::make_unique<Texture>("texturas/bedframe.jpg");
+        glass = std::make_unique<Texture>("texturas/glass.png");
     }
 public:
     std::unique_ptr<Texture> stone;
@@ -50,6 +51,7 @@ public:
     std::unique_ptr<Texture> wardrobe;
     std::unique_ptr<Texture> table;
     std::unique_ptr<Texture> bedframe;
+    std::unique_ptr<Texture> glass;
     static TextureManager& getInstance() {
         static TextureManager instance;
         return instance;
@@ -74,6 +76,7 @@ public:
         wardrobe.reset();
         table.reset();
         bedframe.reset();
+        glass.reset();
     }
     ~TextureManager() {
         clear();

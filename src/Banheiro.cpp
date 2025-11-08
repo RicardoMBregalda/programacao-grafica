@@ -3,6 +3,9 @@
 #include "Wall.h"
 #include "Pia.h"
 #include "VasoSanitario.h"
+#include "Tapete.h"
+#include "Box.h"
+#include "Chuveiro.h"
 #include "TextureManager.h"
 #include <glm/gtc/matrix_transform.hpp>
 Banheiro::Banheiro(glm::vec3 pos, float ang)
@@ -72,6 +75,31 @@ void Banheiro::createFixtures() {
     );
     vaso->scale = glm::vec3(1.2f);
     components.push_back(std::move(vaso));
+
+    auto tapete = std::make_unique<Tapete>(
+        glm::vec3(0.0f, 0.0f, -0.8f), 
+        0.0f,
+        tex.fabricLight.get()  
+    );
+    tapete->scale = glm::vec3(0.75f);
+    components.push_back(std::move(tapete));
+
+    auto box = std::make_unique<Box>(
+        glm::vec3(-1.1f, 0.0f, 1.0f),
+        0.0f,
+        tex.glass.get(),
+        tex.tile.get()
+    );
+    box->scale = glm::vec3(1.0f);
+    components.push_back(std::move(box));
+
+    auto chuveiro = std::make_unique<Chuveiro>(
+        glm::vec3(-1.45f, 0.0f, 1.0f),
+        180.0f,
+        tex.metal.get()
+    );
+    chuveiro->scale = glm::vec3(1.0f);
+    components.push_back(std::move(chuveiro));
 }
 void Banheiro::draw(Shader& shader, glm::mat4 parentTransform) {
     glm::mat4 modelMatrix = glm::mat4(1.0f);

@@ -94,7 +94,7 @@ int main() {
     auto banheiro = std::make_unique<Banheiro>(glm::vec3(-6.51f, 0.0f, -1.5f), 0.0f);
     sceneObjects.push_back(std::move(banheiro));
     
-    auto portaEntrada = std::make_unique<Porta>(glm::vec3(0.0f, 0.0f, 4.0f), 180.0f);
+    auto portaEntrada = std::make_unique<Porta>(glm::vec3(0.0f, 0.0f, 1.5f), 180.0f);
     sceneObjects.push_back(std::move(portaEntrada));
     Camera camera(glm::vec3(0.0f, 2.0f, 6.0f));
     globalCamera = &camera;
