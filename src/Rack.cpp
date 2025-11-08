@@ -13,7 +13,6 @@ Rack::Rack(glm::vec3 pos, float ang, Texture* wood, Texture* metal)
 void Rack::init() {
     const float width = 1.80f;      
     const float depth = 0.40f;      
-    const float height = 0.50f;     
     const float shelfH = 0.03f;     
     const float legH = 0.08f;       
     const float legR = 0.025f;      

@@ -10,12 +10,13 @@ class Texture;
 class Table : public Object {
 public:
     Table(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang, 
-          Texture* wood = nullptr);
-    Table(glm::vec3 pos, float ang, Texture* wood = nullptr);
+          Texture* wood = nullptr, Texture* tableTop = nullptr);
+    Table(glm::vec3 pos, float ang, Texture* wood = nullptr, Texture* tableTop = nullptr);
     void init();
     void draw(Shader &shader, glm::mat4 model);
 private:
     std::vector<std::unique_ptr<Object>> parts;
-    Texture* woodTexture;  
+    Texture* woodTexture;     
+    Texture* tableTopTexture; 
 };
 #endif 

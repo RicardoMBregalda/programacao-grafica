@@ -21,35 +21,35 @@ void Banheiro::createRoom() {
     auto floor = std::make_unique<Floor>(
         glm::vec3(0.0f, 0.00f, 0.0f),
         0.0f,
-        tex.floor.get()
+        tex.bathroomFloor.get()
     );
     floor->scale = glm::vec3(roomW, 0.1f, roomD);
     components.push_back(std::move(floor));
     auto backWall = std::make_unique<Wall>(
         glm::vec3(0.0f, roomH * 0.5f, -roomD * 0.5f),
         0.0f,
-        tex.wall.get()
+        tex.tile.get()
     );
     backWall->scale = glm::vec3(roomW, roomH, 0.2f);
     components.push_back(std::move(backWall));
     auto leftWall = std::make_unique<Wall>(
         glm::vec3(-roomW * 0.5f, roomH * 0.5f, 0.0f),
         90.0f,
-        tex.wall.get()
+        tex.tile.get()
     );
     leftWall->scale = glm::vec3(roomD, roomH, 0.2f);
     components.push_back(std::move(leftWall));
     auto rightWall = std::make_unique<Wall>(
         glm::vec3(roomW * 0.5f, roomH * 0.5f, 0.0f),
         90.0f,
-        tex.wall.get()
+        tex.tile.get()
     );
     rightWall->scale = glm::vec3(roomD, roomH, 0.2f);
     components.push_back(std::move(rightWall));
     auto frontWall = std::make_unique<Wall>(
         glm::vec3(0.0f, roomH * 0.5f, roomD * 0.5f),
         0.0f,
-        tex.wall.get()
+        tex.tile.get()
     );
     frontWall->scale = glm::vec3(roomW, roomH, 0.2f);
     components.push_back(std::move(frontWall));
@@ -59,15 +59,16 @@ void Banheiro::createFixtures() {
     auto pia = std::make_unique<Pia>(
         glm::vec3(1.1f, 0.0f, -0.8f),  
         270.0f,  
-        tex.wood.get(),
-        tex.metal.get()
+        tex.wood.get(),      // Armário em madeira
+        tex.ceramics.get(),      // Pia em cerâmica
+        tex.plastic.get()    // Torneira em plástico
     );
     pia->scale = glm::vec3(1.2f);
     components.push_back(std::move(pia));
     auto vaso = std::make_unique<VasoSanitario>(
         glm::vec3(-1.0f, 0.0f, -0.8f),  
         90.0f,  
-        tex.plastic.get()
+        tex.ceramics.get()
     );
     vaso->scale = glm::vec3(1.2f);
     components.push_back(std::move(vaso));

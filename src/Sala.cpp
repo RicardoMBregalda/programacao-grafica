@@ -67,7 +67,7 @@ void Sala::createLivingArea() {
     auto sofa = std::make_unique<Sofa>(
         glm::vec3(-1.8f, 0.0f, 0.0f),
         180.0f,
-        tex.fabric.get(),
+        tex.sofa.get(),
         tex.wood.get()
     );
     sofa->scale = glm::vec3(1.0f);
@@ -82,14 +82,15 @@ void Sala::createLivingArea() {
     auto coffeeTable = std::make_unique<Table>(
         glm::vec3(-1.8f, 0.0f, -1.8f),
         0.0f,
-        tex.wood.get()
+        tex.wood.get(),   // Pernas em madeira
+        tex.table.get()   // Tampo em table
     );
     coffeeTable->scale = glm::vec3(1.0f, 0.35f, 1.0f);
     components.push_back(std::move(coffeeTable));
     auto rack = std::make_unique<Rack>(
         glm::vec3(-1.8f, 0.0f, -3.5f),
         0.0f,
-        tex.wood.get(),
+        tex.wood3.get(),
         tex.metal.get()
     );
     rack->scale = glm::vec3(1.25f, 1.25f, 1.25f);
@@ -108,7 +109,8 @@ void Sala::createDiningArea() {
     auto diningTable = std::make_unique<Table>(
         glm::vec3(2.2f, 0.0f, -1.9f),
         0.0f,
-        tex.wood.get()
+        tex.wood.get(),   // Pernas em madeira
+        tex.table.get()   // Tampo em table
     );
     diningTable->scale = glm::vec3(1.0f, 1.0f, 2.5f);
     components.push_back(std::move(diningTable));
@@ -165,42 +167,42 @@ void Sala::createDiningArea() {
     auto plate1 = std::make_unique<Prato>(
         glm::vec3(1.85f, plateY, -2.3f),
         0.0f,
-        tex.plastic.get()
+        tex.ceramics.get()
     );
     plate1->scale = glm::vec3(3.0f);
     components.push_back(std::move(plate1));
     auto plate2 = std::make_unique<Prato>(
         glm::vec3(1.85f, plateY, -1.4f),
         0.0f,
-        tex.plastic.get()
+        tex.ceramics.get()
     );
     plate2->scale = glm::vec3(3.0f);
     components.push_back(std::move(plate2));
     auto plate3 = std::make_unique<Prato>(
         glm::vec3(2.55f, plateY, -2.3f),
         0.0f,
-        tex.plastic.get()
+        tex.ceramics.get()
     );
     plate3->scale = glm::vec3(3.0f);
     components.push_back(std::move(plate3));
     auto plate4 = std::make_unique<Prato>(
         glm::vec3(2.55f, plateY, -1.4f),
         0.0f,
-        tex.plastic.get()
+        tex.ceramics.get()
     );
     plate4->scale = glm::vec3(3.0f);
     components.push_back(std::move(plate4));
     auto plate5 = std::make_unique<Prato>(
         glm::vec3(2.2f, plateY, -2.6f),
         0.0f,
-        tex.plastic.get()
+        tex.ceramics.get()
     );
     plate5->scale = glm::vec3(3.0f);
     components.push_back(std::move(plate5));
     auto plate6 = std::make_unique<Prato>(
         glm::vec3(2.2f, plateY, -1.2f),
         0.0f,
-        tex.plastic.get()
+        tex.ceramics.get()
     );
     plate6->scale = glm::vec3(3.0f);
     components.push_back(std::move(plate6));

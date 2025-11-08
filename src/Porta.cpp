@@ -22,28 +22,28 @@ void Porta::init() {
         glm::vec3(0.0f),
         glm::vec3(doorW + frameT * 2, frameT, frameT),
         0.0f,
-        tex.wood.get()
+        tex.wood2.get()
     ));
     parts.push_back(std::make_unique<Cube>(
         glm::vec3(-doorW * 0.5f - frameT * 0.5f, doorH * 0.5f, 0.0f),
         glm::vec3(0.0f),
         glm::vec3(frameT, doorH, frameT),
         0.0f,
-        tex.wood.get()
+        tex.wood2.get()
     ));
     parts.push_back(std::make_unique<Cube>(
         glm::vec3(doorW * 0.5f + frameT * 0.5f, doorH * 0.5f, 0.0f),
         glm::vec3(0.0f),
         glm::vec3(frameT, doorH, frameT),
         0.0f,
-        tex.wood.get()
+        tex.wood2.get()
     ));
     parts.push_back(std::make_unique<Cube>(
         glm::vec3(0.0f, doorH * 0.5f, 0.0f),
         glm::vec3(0.0f),
         glm::vec3(doorW, doorH, doorT),
         0.0f,
-        tex.wood.get()
+        tex.wood2.get()
     ));
     const float handleHeight = doorH * 0.5f;  
     const float handleXFront = -doorW * 0.35f;  

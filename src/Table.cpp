@@ -1,12 +1,12 @@
 #include "Table.h"
 #include "Cube.h"
 #include "Texture.h"
-Table::Table(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang, Texture* wood)
-    : Object(pos, rot, scl, ang), woodTexture(wood) {
+Table::Table(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang, Texture* wood, Texture* tableTop)
+    : Object(pos, rot, scl, ang), woodTexture(wood), tableTopTexture(tableTop) {
     init();
 }
-Table::Table(glm::vec3 pos, float ang, Texture* wood)
-    : Object(pos, glm::vec3(0.0f), glm::vec3(1.0f), ang), woodTexture(wood) {
+Table::Table(glm::vec3 pos, float ang, Texture* wood, Texture* tableTop)
+    : Object(pos, glm::vec3(0.0f), glm::vec3(1.0f), ang), woodTexture(wood), tableTopTexture(tableTop) {
     init();
 }
 void Table::init() {
@@ -26,7 +26,7 @@ void Table::init() {
         glm::vec3(0.0f, 1.0f, 0.0f),
         glm::vec3(topW, topT, topD),
         0.0f,
-        woodTexture  
+        tableTopTexture  
     ));
     
     // Perna frontal direita

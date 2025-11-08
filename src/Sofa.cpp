@@ -14,7 +14,6 @@ void Sofa::init() {
     const float seatW = 1.8f;       
     const float seatD = 0.80f;      
     const float seatH = 0.45f;      
-    const float seatY = 0.25f;      
     const float backH = 0.70f;      
     const float backT = 0.15f;      
     const float armW = 0.15f;       

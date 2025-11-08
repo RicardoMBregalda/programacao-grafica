@@ -2,13 +2,13 @@
 #include "Cube.h"
 #include "Texture.h"
 Pia::Pia(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, float ang, 
-         Texture* wood, Texture* metal)
-    : Object(pos, rot, scl, ang), woodTexture(wood), metalTexture(metal) {
+         Texture* wood, Texture* ceramic, Texture* plastic)
+    : Object(pos, rot, scl, ang), woodTexture(wood), ceramicTexture(ceramic), plasticTexture(plastic) {
     init();
 }
-Pia::Pia(glm::vec3 pos, float ang, Texture* wood, Texture* metal)
+Pia::Pia(glm::vec3 pos, float ang, Texture* wood, Texture* ceramic, Texture* plastic)
     : Object(pos, glm::vec3(0.0f), glm::vec3(1.0f), ang), 
-      woodTexture(wood), metalTexture(metal) {
+      woodTexture(wood), ceramicTexture(ceramic), plasticTexture(plastic) {
     init();
 }
 void Pia::init() {
@@ -63,7 +63,7 @@ void Pia::init() {
         glm::vec3(0.0f),
         glm::vec3(handleW, handleH, handleW),
         0.0f,
-        metalTexture
+        plasticTexture
     ));
     
     // Puxador porta direita
@@ -72,7 +72,7 @@ void Pia::init() {
         glm::vec3(0.0f),
         glm::vec3(handleW, handleH, handleW),
         0.0f,
-        metalTexture
+        plasticTexture
     ));
     
     const float sinkBaseY = cabinetH;
@@ -83,7 +83,7 @@ void Pia::init() {
         glm::vec3(0.0f),
         glm::vec3(sinkW, wallThick, sinkD),
         0.0f,
-        metalTexture
+        ceramicTexture
     ));
     
     // Parede frontal da cuba
@@ -92,7 +92,7 @@ void Pia::init() {
         glm::vec3(0.0f),
         glm::vec3(sinkW, sinkDepth, wallThick),
         0.0f,
-        metalTexture
+        ceramicTexture
     ));
     
     // Parede traseira da cuba
@@ -101,7 +101,7 @@ void Pia::init() {
         glm::vec3(0.0f),
         glm::vec3(sinkW, sinkDepth, wallThick),
         0.0f,
-        metalTexture
+        ceramicTexture
     ));
     
     // Parede esquerda da cuba
@@ -110,7 +110,7 @@ void Pia::init() {
         glm::vec3(0.0f),
         glm::vec3(wallThick, sinkDepth, sinkD),
         0.0f,
-        metalTexture
+        ceramicTexture
     ));
     
     // Parede direita da cuba
@@ -119,7 +119,7 @@ void Pia::init() {
         glm::vec3(0.0f),
         glm::vec3(wallThick, sinkDepth, sinkD),
         0.0f,
-        metalTexture
+        ceramicTexture
     ));
     const float faucetY = cabinetH + sinkDepth;
     const float faucetZ = -sinkD * 0.47f; 
@@ -128,28 +128,28 @@ void Pia::init() {
         glm::vec3(0.0f),
         glm::vec3(0.04f, 0.30f, 0.04f),
         0.0f,
-        metalTexture
+        plasticTexture
     ));
     parts.push_back(std::make_unique<Cube>(
         glm::vec3(0.0f, faucetY + 0.20f, faucetZ + 0.08f),
         glm::vec3(0.0f),
         glm::vec3(0.03f, 0.03f, 0.12f),
         0.0f,
-        metalTexture
+        plasticTexture
     ));
     parts.push_back(std::make_unique<Cube>(
         glm::vec3(-0.06f, faucetY + 0.02f, faucetZ),
         glm::vec3(0.0f),
         glm::vec3(0.025f, 0.05f, 0.025f),
         0.0f,
-        metalTexture
+        plasticTexture
     ));
     parts.push_back(std::make_unique<Cube>(
         glm::vec3(0.06f, faucetY + 0.02f, faucetZ),
         glm::vec3(0.0f),
         glm::vec3(0.025f, 0.05f, 0.025f),
         0.0f,
-        metalTexture
+        plasticTexture
     ));
 }
 void Pia::draw(Shader &shader, glm::mat4 model) {

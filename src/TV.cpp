@@ -24,7 +24,6 @@ void TV::init() {
     const float neckH = 0.15f;   
     const float neckD = 0.10f;   
     const float screenY = neckH + standH + screenH * 0.5f;
-    const float frameY = screenY;
     const float neckY = standH + neckH * 0.5f;
     const float standY = standH * 0.5f;
     

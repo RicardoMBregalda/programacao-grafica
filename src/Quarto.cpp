@@ -54,8 +54,8 @@ void Quarto::createFurniture() {
     auto bed = std::make_unique<Bed>(
         glm::vec3(0.0f, 0.0f, -1.4f), 
         180.0f, 
-        tex.wood.get(),
-        tex.fabric.get(),        
+        tex.bedframe.get(),
+        tex.blanket.get(),        
         tex.fabricLight.get()    
     );
     components.push_back(std::move(bed));
@@ -67,14 +67,14 @@ void Quarto::createFurniture() {
     auto ns1 = std::make_unique<Nightstand>(
         glm::vec3(-nsXPos, 0.0f, nsZPos),
         180.0f,
-        tex.wood.get(),
+        tex.wood3.get(),
         tex.metal.get()
     );
     components.push_back(std::move(ns1));
     auto ns2 = std::make_unique<Nightstand>(
         glm::vec3(nsXPos, 0.0f, nsZPos),
         180.0f,
-        tex.wood.get(),
+        tex.wood3.get(),
         tex.metal.get()
     );
     components.push_back(std::move(ns2));
@@ -99,7 +99,7 @@ void Quarto::createFurniture() {
     auto wardrobe = std::make_unique<Wardrobe>(
         glm::vec3(1.6f, 0.0f, 0.5f),
         270.0f, 
-        tex.wood.get(),
+        tex.wardrobe.get(),
         tex.metal.get()
     );
     wardrobe->scale = glm::vec3(1.2f);
