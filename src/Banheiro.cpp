@@ -31,28 +31,28 @@ void Banheiro::createRoom() {
     auto backWall = std::make_unique<Wall>(
         glm::vec3(0.0f, roomH * 0.5f, -roomD * 0.5f),
         0.0f,
-        tex.tile.get()
+        tex.tile_wall.get()
     );
     backWall->scale = glm::vec3(roomW, roomH, 0.2f);
     components.push_back(std::move(backWall));
     auto leftWall = std::make_unique<Wall>(
         glm::vec3(-roomW * 0.5f, roomH * 0.5f, 0.0f),
         90.0f,
-        tex.tile.get()
+        tex.tile_wall.get()
     );
     leftWall->scale = glm::vec3(roomD, roomH, 0.2f);
     components.push_back(std::move(leftWall));
     auto rightWall = std::make_unique<Wall>(
         glm::vec3(roomW * 0.5f, roomH * 0.5f, 0.0f),
         90.0f,
-        tex.tile.get()
+        tex.tile_wall.get()
     );
     rightWall->scale = glm::vec3(roomD, roomH, 0.2f);
     components.push_back(std::move(rightWall));
     auto frontWall = std::make_unique<Wall>(
         glm::vec3(0.0f, roomH * 0.5f, roomD * 0.5f),
         0.0f,
-        tex.tile.get()
+        tex.tile_wall.get()
     );
     frontWall->scale = glm::vec3(roomW, roomH, 0.2f);
     components.push_back(std::move(frontWall));
