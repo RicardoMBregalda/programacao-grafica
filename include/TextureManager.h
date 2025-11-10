@@ -10,7 +10,6 @@ private:
     TextureManager(const TextureManager&) = delete;
     TextureManager& operator=(const TextureManager&) = delete;
     void loadAllTextures() {
-        stone = std::make_unique<Texture>("texturas/pedra-28.jpg");
         wood = std::make_unique<Texture>("texturas/madeira.jpg");
         metal = std::make_unique<Texture>("texturas/metal.jpg");
         plastic = std::make_unique<Texture>("texturas/plastico.jpg");
@@ -32,7 +31,6 @@ private:
         glass = std::make_unique<Texture>("texturas/glass.png");
     }
 public:
-    std::unique_ptr<Texture> stone;
     std::unique_ptr<Texture> wood;
     std::unique_ptr<Texture> metal;
     std::unique_ptr<Texture> plastic;
@@ -57,7 +55,6 @@ public:
         return instance;
     }
     void clear() {
-        stone.reset();
         wood.reset();
         metal.reset();
         plastic.reset();
